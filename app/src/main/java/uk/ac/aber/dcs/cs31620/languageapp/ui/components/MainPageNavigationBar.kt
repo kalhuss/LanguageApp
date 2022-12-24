@@ -78,50 +78,63 @@ import uk.ac.aber.dcs.cs31620.languageapp.R
 //}
 
 @Composable
-fun MainPageNavigationBar(){
-    val icons = listOf(
-        IconGroup(
+fun MainPageNavigationBar(navController : NavController) {
+    val icons = mapOf(
+        Screen.Home to IconGroup(
             filledIcon = Icons.Filled.Home,
             outlineIcon = Icons.Outlined.Home,
             label = stringResource(id = R.string.home)
         ),
-        IconGroup(
+        Screen.WordList to IconGroup(
             filledIcon = Icons.Filled.List,
             outlineIcon = Icons.Outlined.List,
             label = stringResource(id = R.string.word_list)
         ),
-        IconGroup(
+        Screen.Quiz to IconGroup(
             filledIcon = Icons.Filled.ChatBubble,
             outlineIcon = Icons.Outlined.ChatBubble,
             label = stringResource(id = R.string.quiz)
         )
     )
 
-    NavigationBar{
-        icons.forEach {
-            iconGroup ->
-            val isSelected = false
-            val labelText = iconGroup.label
+    NavigationBar {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        screens.forEach { screen ->
+            val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            val labelText = icons[screen]!!.label
             NavigationBarItem(
                 icon = {
                     Icon(
-                        imageVector = (
-                                if (isSelected)
-                                    iconGroup.filledIcon
-                                else
-                                    iconGroup.outlineIcon
-                                ),
+                        imageVector = (if (isSelected)
+                            icons[screen]!!.filledIcon
+                        else
+                            icons[screen]!!.outlineIcon),
                         contentDescription = labelText
                     )
                 },
                 label = { Text(labelText) },
                 selected = isSelected,
-                onClick = { }
+                onClick = {
+                    navController.navigate(screen.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+                }
             )
-
         }
     }
 }
+
 
 
 
@@ -130,6 +143,6 @@ fun MainPageNavigationBar(){
 private fun MainPageNavigationBarPreview() {
     val navController = rememberNavController()
     LanguageAppTheme(dynamicColor = false) {
-        MainPageNavigationBar()
+        MainPageNavigationBar(navController)
     }
 }

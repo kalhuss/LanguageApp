@@ -20,23 +20,20 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.MainPageTopAppBar
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 
-class QuizScreen {
-
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun QuizScreen(){
-        TopLevelScaffold() {
-                innerPadding ->
-            Surface(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                Text(text = "Quiz Screen",
-                    modifier = Modifier.padding(start = 8.dp))
-            }
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun QuizScreen(navController : NavHostController){
+    TopLevelScaffold(
+        navController = navController
+    ) { innerPadding ->
+        Surface(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            Text(text = "Quiz Screen",
+                modifier = Modifier.padding(start = 8.dp))
         }
     }
-
 }

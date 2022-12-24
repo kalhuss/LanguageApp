@@ -7,19 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
-import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreenPreview
-//import uk.ac.aber.dcs.cs31620.faa.ui.home.HomeScreenTopLevel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
+import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //BuildNavigationGraph()
-                    HomeScreen()
+                    BuildNavigationGraph()
                 }
             }
         }
@@ -40,18 +36,19 @@ class MainActivity : ComponentActivity() {
 }
 
 
-//@Composable
-//private fun BuildNavigationGraph(){
-//    val navController = rememberNavController()
-//
-//    NavHost(
-//        navController = navController,
-//        startDestination = Screen.Home.route
-//    ) {
-//        composable(Screen.Home.route){ HomeScreen (navController) }
-//        //composable(Screen.WordList.route){ WordListScreen (navController) }}
-//    }
-//}
+@Composable
+private fun BuildNavigationGraph(){
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route
+    ) {
+        composable(Screen.Home.route){ HomeScreen (navController) }
+        composable(Screen.WordList.route){ WordListScreen (navController) }
+        composable(Screen.Quiz.route){ QuizScreen (navController) }
+}
+}
 
 
 
@@ -59,7 +56,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     LanguageAppTheme {
-        //BuildNavigationGraph()
-        HomeScreen()
+        BuildNavigationGraph()
     }
 }

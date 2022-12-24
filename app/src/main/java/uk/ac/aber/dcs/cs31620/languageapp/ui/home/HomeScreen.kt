@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.MainPageNavigationBar
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.MainPageTopAppBar
 //import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -39,9 +40,11 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(){
-    TopLevelScaffold() {
-        innerPadding ->
+fun HomeScreen(navController: NavHostController) {
+
+    TopLevelScaffold(
+        navController = navController
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
@@ -55,8 +58,9 @@ fun HomeScreen(){
 
 @Preview
 @Composable
-fun HomeScreenPreview(){
+private fun HomeScreenPreview(){
+    val navController = rememberNavController()
     LanguageAppTheme(dynamicColor = false) {
-        HomeScreen()
+        HomeScreen(navController)
     }
 }
