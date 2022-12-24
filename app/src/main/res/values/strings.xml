@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">LanguageApp</string>
+    <string name="app_name">Language App</string>
+    <string name="nav_drawer_menu">Navigation</string>
+    <string name="home">Home</string>
+    <string name="word_list">Word List</string>
+    <string name="quiz">Quiz</string>
 </resources>
