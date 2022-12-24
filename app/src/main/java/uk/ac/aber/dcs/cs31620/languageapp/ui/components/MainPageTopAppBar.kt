@@ -2,22 +2,19 @@
 
 package uk.ac.aber.dcs.cs31620.languageapp.ui.components
 
+import android.text.Layout
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+//import the modifier for the top app bar
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import uk.ac.aber.dcs.cs31620.languageapp.R
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 
-/**
- * Represents a top app bar component using M3 CenterAlignedTopAppBar.
- * Has a menu button icon and the app name.
- * @param onClick: provides the behaviour for the menu icon or
- * an empty lambda if not provided.
- * @author Chris Loftus
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPageTopAppBar(
@@ -34,8 +31,8 @@ fun MainPageTopAppBar(
         navigationIcon = {
             IconButton(onClick = onClick) {
                 Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(R.string.nav_drawer_menu)
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(R.string.settings)
                 )
             }
         }
