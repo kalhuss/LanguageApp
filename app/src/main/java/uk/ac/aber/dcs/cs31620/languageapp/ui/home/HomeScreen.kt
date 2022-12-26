@@ -2,45 +2,25 @@ package uk.ac.aber.dcs.cs31620.languageapp.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.dcs.cs31620.languageapp.ui.components.MainPageNavigationBar
-import uk.ac.aber.dcs.cs31620.languageapp.ui.components.MainPageTopAppBar
-//import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-//import com.bumptech.glide.integration.compose.GlideImage
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 
-//@Composable
-//fun HomeScreen(navController: NavController){
-//
-//    TopLevelScaffold(navController = navController as NavHostController) {
-//        innerPadding ->
-//        Surface(
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//        ) {
-//            Text(text = "Home Screen",
-//                modifier = Modifier.padding(start = 8.dp))
-//        }
-//    }
-//}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController) {
+
+    var nativeLanguage by remember { mutableStateOf("") }
+    var foreignLanguage by remember { mutableStateOf("") }
 
     TopLevelScaffold(
         navController = navController
@@ -50,8 +30,26 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Text(text = "Home Screen",
-                modifier = Modifier.padding(start = 8.dp))
+            Column(){
+                Text("Native Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+                TextField(
+                    value = nativeLanguage,
+                    onValueChange = { nativeLanguage = it },
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    label = { Text("Native Language") }
+                )
+
+                Text("Foreign Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+                TextField(
+                    value = foreignLanguage,
+                    onValueChange = { foreignLanguage = it },
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    label = { Text("Foreign Language") }
+                )
+                Button(onClick = {}, shape = RoundedCornerShape(4.dp), modifier = Modifier.padding(top = 24.dp).fillMaxWidth().wrapContentSize(Alignment.Center)) {
+                    Text("Next")
+                }
+            }
         }
     }
 }
