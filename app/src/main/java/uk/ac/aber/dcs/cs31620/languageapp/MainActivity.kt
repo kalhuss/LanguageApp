@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
@@ -23,7 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LanguageAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -35,22 +35,21 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
-private fun BuildNavigationGraph(){
+private fun BuildNavigationGraph() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
-    ) {
-        composable(Screen.Home.route){ HomeScreen (navController) }
-        composable(Screen.WordList.route){ WordListScreen (navController) }
-        composable(Screen.Quiz.route){ QuizScreen (navController) }
+    )
+    {
+        composable(Screen.Home.route) { HomeScreen(navController) }
+        composable(Screen.WordList.route) { WordListScreen(navController) }
+        composable(Screen.Quiz.route) { QuizScreen(navController) }
+        composable(Screen.Setting.route) { SettingScreen(navController) }
+    }
 }
-}
-
-
 
 @Preview(showBackground = true)
 @Composable

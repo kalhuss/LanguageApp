@@ -15,7 +15,7 @@ fun TopLevelScaffold(
 ) {
     Scaffold(
         topBar = {
-            MainPageTopAppBar()
+            MainPageTopAppBar(navController)
         },
         bottomBar = {
             MainPageNavigationBar(navController)

@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "uk.ac.aber.dcs.cs31620.languageapp.test.app-mergeDebugAndroidTestResources-32:/values-pt/values-pt.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\kalim\\.gradle\\caches\\transforms-3\\395f56a7b705d4f366f8201d42380083\\transformed\\ui-1.4.0-alpha03\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,150,236,333,432,518,601,698,789,876,948,1017,1102,1192,1268,1344",
+                        "endColumns": "94,85,96,98,85,82,96,90,86,71,68,84,89,75,75,66",
+                        "endOffsets": "145,231,328,427,513,596,693,784,871,943,1012,1097,1187,1263,1339,1406"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,150,236,333,432,518,601,698,789,876,948,1017,1102,1192,1369,1445",
+                        "endColumns": "94,85,96,98,85,82,96,90,86,71,68,84,89,75,75,66",
+                        "endOffsets": "145,231,328,427,513,596,693,784,871,943,1012,1097,1187,1263,1440,1507"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kalim\\.gradle\\caches\\transforms-3\\17ad8482735f67672b7a75a68816510d\\transformed\\core-1.9.0\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "16",
+                        "startColumns": "4",
+                        "startOffsets": "1268",
+                        "endColumns": "100",
+                        "endOffsets": "1364"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,60 @@
+{
+    "logs": [
+        {
+            "outputFile": "uk.ac.aber.dcs.cs31620.languageapp-mergeDebugResources-49:/values-vi/values-vi.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\kalim\\.gradle\\caches\\transforms-3\\32e81bf993105d08e0be18361bc0c7d2\\transformed\\material3-1.1.0-alpha03\\res\\values-vi\\values-vi.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,134,209",
+                        "endColumns": "78,74,77",
+                        "endOffsets": "129,204,282"
+                    },
+                    "to": {
+                        "startLines": "4,7,9",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "237,522,689",
+                        "endColumns": "78,74,77",
+                        "endOffsets": "311,592,762"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kalim\\.gradle\\caches\\transforms-3\\395f56a7b705d4f366f8201d42380083\\transformed\\ui-1.4.0-alpha03\\res\\values-vi\\values-vi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,151,237,343,443,535,620,713,807,888,958,1028,1118,1209,1281,1358",
+                        "endColumns": "95,85,105,99,91,84,92,93,80,69,69,89,90,71,76,65",
+                        "endOffsets": "146,232,338,438,530,615,708,802,883,953,1023,1113,1204,1276,1353,1419"
+                    },
+                    "to": {
+                        "startLines": "2,3,5,6,8,10,11,12,13,14,15,16,17,18,20,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,151,316,422,597,767,852,945,1039,1120,1190,1260,1350,1441,1614,1691",
+                        "endColumns": "95,85,105,99,91,84,92,93,80,69,69,89,90,71,76,65",
+                        "endOffsets": "146,232,417,517,684,847,940,1034,1115,1185,1255,1345,1436,1508,1686,1752"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kalim\\.gradle\\caches\\transforms-3\\17ad8482735f67672b7a75a68816510d\\transformed\\core-1.9.0\\res\\values-vi\\values-vi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "19",
+                        "startColumns": "4",
+                        "startOffsets": "1513",
+                        "endColumns": "100",
+                        "endOffsets": "1609"
+                    }
+                }
+            ]
+        }
+    ]
+}
