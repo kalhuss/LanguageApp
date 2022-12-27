@@ -122,7 +122,8 @@ public final class WordPairDao_Impl implements WordPairDao {
   }
 
   @Override
-  public Object insertWordPair(final WordPair wordPair, final Continuation<? super Unit> arg1) {
+  public Object insertWordPair(final WordPair wordPair,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -135,11 +136,12 @@ public final class WordPairDao_Impl implements WordPairDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteWordPair(final WordPair wordPair, final Continuation<? super Unit> arg1) {
+  public Object deleteWordPair(final WordPair wordPair,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -152,11 +154,12 @@ public final class WordPairDao_Impl implements WordPairDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateWordPair(final WordPair wordPair, final Continuation<? super Unit> arg1) {
+  public Object updateWordPair(final WordPair wordPair,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -169,11 +172,11 @@ public final class WordPairDao_Impl implements WordPairDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllWordPairs(final Continuation<? super Unit> arg0) {
+  public Object deleteAllWordPairs(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -188,7 +191,7 @@ public final class WordPairDao_Impl implements WordPairDao {
           __preparedStmtOfDeleteAllWordPairs.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override

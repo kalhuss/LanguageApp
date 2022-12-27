@@ -49,10 +49,11 @@ abstract class WordPairDatabase : RoomDatabase() {
         }
 
         private suspend fun populateDatabase(context: Context, instance: WordPairDatabase){
-            val wordpair1 = WordPair(0, "English", "Hello", "Welsh", "Helo")
-
+            val wordpair1 = WordPair(2, "English", "Hey", "Swedish", "Hej")
+            val wordpair2 = WordPair(3, "English", "I am eating", "Swedish", "Jag ater")
             val dao = instance.wordPairDao()
             dao.insertWordPair(wordpair1)
+            dao.insertWordPair(wordpair2)
         }
     }
 }
