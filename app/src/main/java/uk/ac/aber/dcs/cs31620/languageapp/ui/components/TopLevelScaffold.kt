@@ -5,13 +5,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopLevelScaffold(
     navController: NavHostController,
-    pageContent:
-    @Composable (innerPadding : PaddingValues) -> Unit = { }
+    pageContent: @Composable (innerPadding : PaddingValues) -> Unit = { }
 ) {
     Scaffold(
         topBar = {

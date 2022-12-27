@@ -5,7 +5,7 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="27"
+8        android:minSdkVersion="30"
 8-->D:\AndroidStudiosProjects\LanguageApp\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="33" />
 9-->D:\AndroidStudiosProjects\LanguageApp\app\src\main\AndroidManifest.xml
@@ -113,31 +113,40 @@
 64-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:32:17-49
 65        </provider>
 66
-67        <receiver
-67-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:35:9-47:20
-68            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-68-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:36:13-76
-69            android:directBootAware="false"
-69-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:37:13-44
-70            android:enabled="true"
-70-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:38:13-35
-71            android:exported="true"
-71-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:39:13-36
-72            android:permission="android.permission.DUMP" >
-72-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:40:13-57
-73            <intent-filter>
-73-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:41:13-43:29
-74                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-74-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:42:17-91
-74-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:42:25-88
-75            </intent-filter>
-76            <intent-filter>
-76-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:44:13-46:29
-77                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-77-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:45:17-85
-77-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:45:25-82
-78            </intent-filter>
-79        </receiver>
-80    </application>
-81
-82</manifest>
+67        <service
+67-->[androidx.room:room-runtime:2.4.3] C:\Users\kalim\.gradle\caches\transforms-3\782923e9432f7da6314080d024612262\transformed\room-runtime-2.4.3\AndroidManifest.xml:25:9-28:40
+68            android:name="androidx.room.MultiInstanceInvalidationService"
+68-->[androidx.room:room-runtime:2.4.3] C:\Users\kalim\.gradle\caches\transforms-3\782923e9432f7da6314080d024612262\transformed\room-runtime-2.4.3\AndroidManifest.xml:26:13-74
+69            android:directBootAware="true"
+69-->[androidx.room:room-runtime:2.4.3] C:\Users\kalim\.gradle\caches\transforms-3\782923e9432f7da6314080d024612262\transformed\room-runtime-2.4.3\AndroidManifest.xml:27:13-43
+70            android:exported="false" />
+70-->[androidx.room:room-runtime:2.4.3] C:\Users\kalim\.gradle\caches\transforms-3\782923e9432f7da6314080d024612262\transformed\room-runtime-2.4.3\AndroidManifest.xml:28:13-37
+71
+72        <receiver
+72-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:35:9-47:20
+73            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+73-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:36:13-76
+74            android:directBootAware="false"
+74-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:37:13-44
+75            android:enabled="true"
+75-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:38:13-35
+76            android:exported="true"
+76-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:39:13-36
+77            android:permission="android.permission.DUMP" >
+77-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:40:13-57
+78            <intent-filter>
+78-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:41:13-43:29
+79                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+79-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:42:17-91
+79-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:42:25-88
+80            </intent-filter>
+81            <intent-filter>
+81-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:44:13-46:29
+82                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+82-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:45:17-85
+82-->[androidx.profileinstaller:profileinstaller:1.2.0] C:\Users\kalim\.gradle\caches\transforms-3\0a1e6ecd500520f822d8e8b28aff4127\transformed\profileinstaller-1.2.0\AndroidManifest.xml:45:25-82
+83            </intent-filter>
+84        </receiver>
+85    </application>
+86
+87</manifest>

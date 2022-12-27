@@ -1,30 +1,29 @@
 package uk.ac.aber.dcs.cs31620.languageapp.datasource
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordPair
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordPairDao
 
-class WordPairRepository(private val wordPairDao: WordPairDao) {
+class WordPairRepository(application: Application){
+    private val wordPairDao = WordPairDatabase.getDatabase(application)!!.wordPairDao()
 
-    val getAllData: LiveData<List<WordPair>> = wordPairDao.getAllWordPairs()
-
-    fun addWords(wordPair: WordPair) {
+    suspend fun insertWordPair(wordPair: WordPair) {
         wordPairDao.insertWordPair(wordPair)
     }
+
+    suspend fun updateWordPair(wordPair: WordPair) {
+        wordPairDao.updateWordPair(wordPair)
+    }
+
+    suspend fun deleteWordPair(wordPair: WordPair) {
+        wordPairDao.deleteWordPair(wordPair)
+    }
+
+    suspend fun deleteAllWordPairs() {
+        wordPairDao.deleteAllWordPairs()
+    }
+
+    fun getAllWordPairs(): LiveData<List<WordPair>> {
+        return wordPairDao.getAllWordPairs()
+    }
 }
-
-
-
-
-
-//    suspend fun deleteWords(wordPair: WordPair) {
-//        wordPairDao.deleteWord(wordPair.id)
-//    }
-//
-//    suspend fun deleteAllWords() {
-//        wordPairDao.deleteAllWords()
-//    }
-//
-//    fun insert(wordPair: WordPair) {
-//        wordPairDao.insertWordPair(wordPair)
-//    }
