@@ -35,5 +35,9 @@ class WordPairViewModel(application: Application) : AndroidViewModel(application
         repository.deleteAllWordPairs()
     }
 
+    fun getFirstWordPair() = viewModelScope.launch(Dispatchers.IO) {
+        repository.getFirstWordPair()
+    }
+
 
 }

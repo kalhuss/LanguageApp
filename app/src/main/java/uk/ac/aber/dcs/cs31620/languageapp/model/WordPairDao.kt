@@ -19,4 +19,7 @@ interface WordPairDao{
 
     @Query("SELECT * FROM words_table ORDER BY id ASC")
     fun getAllWordPairs(): LiveData<List<WordPair>>
+
+    @Query("SELECT * FROM words_table LIMIT 1")
+    fun getFirstWordPair(): WordPair?
 }

@@ -19,8 +19,19 @@ abstract class WordPairDatabase : RoomDatabase() {
         private var instance: WordPairDatabase? = null
         private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+        fun deleteDatabase(context: Context){
+            Room.databaseBuilder(context, WordPairDatabase::class.java,
+            "word_pair_database")
+                .allowMainThreadQueries()
+                .build()
+                .clearAllTables()
+            instance = null
+        }
+
+
         @Synchronized
         fun getDatabase(context: Context): WordPairDatabase? {
+            //context.deleteDatabase("word_pair_database")
             if (instance == null) {
                 instance =
                     Room.databaseBuilder<WordPairDatabase>(

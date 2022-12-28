@@ -26,4 +26,8 @@ class WordPairRepository(application: Application){
     fun getAllWordPairs(): LiveData<List<WordPair>> {
         return wordPairDao.getAllWordPairs()
     }
+
+    fun getFirstWordPair(): WordPair?{
+        return wordPairDao.getFirstWordPair()
+    }
 }

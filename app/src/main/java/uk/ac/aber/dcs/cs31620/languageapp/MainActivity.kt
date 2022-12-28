@@ -18,6 +18,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
+import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.AddWordScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
 class MainActivity : ComponentActivity() {
@@ -50,6 +51,7 @@ private fun BuildNavigationGraph() {
         composable(Screen.WordList.route) { WordListScreen(navController) }
         composable(Screen.Quiz.route) { QuizScreen(navController) }
         composable(Screen.Setting.route) { SettingScreen(navController) }
+        composable(Screen.AddWord.route) { AddWordScreen(navController)}
     }
 }
 

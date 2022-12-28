@@ -182,6 +182,7 @@ layout notification_template_part_chronometer
 layout notification_template_part_time
 mipmap ic_launcher
 mipmap ic_launcher_round
+string add_word
 string androidx_startup
 string app_name
 string close_drawer

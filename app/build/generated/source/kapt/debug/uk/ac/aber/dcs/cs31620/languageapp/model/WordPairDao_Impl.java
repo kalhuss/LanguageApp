@@ -253,6 +253,57 @@ public final class WordPairDao_Impl implements WordPairDao {
     });
   }
 
+  @Override
+  public WordPair getFirstWordPair() {
+    final String _sql = "SELECT * FROM words_table LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfNativeLanguage = CursorUtil.getColumnIndexOrThrow(_cursor, "nativeLanguage");
+      final int _cursorIndexOfNativeWord = CursorUtil.getColumnIndexOrThrow(_cursor, "nativeWord");
+      final int _cursorIndexOfForeignLanguage = CursorUtil.getColumnIndexOrThrow(_cursor, "foreignLanguage");
+      final int _cursorIndexOfForeignWord = CursorUtil.getColumnIndexOrThrow(_cursor, "foreignWord");
+      final WordPair _result;
+      if(_cursor.moveToFirst()) {
+        final int _tmpId;
+        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final String _tmpNativeLanguage;
+        if (_cursor.isNull(_cursorIndexOfNativeLanguage)) {
+          _tmpNativeLanguage = null;
+        } else {
+          _tmpNativeLanguage = _cursor.getString(_cursorIndexOfNativeLanguage);
+        }
+        final String _tmpNativeWord;
+        if (_cursor.isNull(_cursorIndexOfNativeWord)) {
+          _tmpNativeWord = null;
+        } else {
+          _tmpNativeWord = _cursor.getString(_cursorIndexOfNativeWord);
+        }
+        final String _tmpForeignLanguage;
+        if (_cursor.isNull(_cursorIndexOfForeignLanguage)) {
+          _tmpForeignLanguage = null;
+        } else {
+          _tmpForeignLanguage = _cursor.getString(_cursorIndexOfForeignLanguage);
+        }
+        final String _tmpForeignWord;
+        if (_cursor.isNull(_cursorIndexOfForeignWord)) {
+          _tmpForeignWord = null;
+        } else {
+          _tmpForeignWord = _cursor.getString(_cursorIndexOfForeignWord);
+        }
+        _result = new WordPair(_tmpId,_tmpNativeLanguage,_tmpNativeWord,_tmpForeignLanguage,_tmpForeignWord);
+      } else {
+        _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
   public static List<Class<?>> getRequiredConverters() {
     return Collections.emptyList();
   }
