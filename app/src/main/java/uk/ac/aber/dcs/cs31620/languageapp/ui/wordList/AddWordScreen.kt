@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -20,13 +21,18 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordPair
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordPairViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddWordScreen(navController: NavHostController) {
-    val repository = WordPairRepository(Application())  // Step 1
-    val firstWordPair = repository.getFirstWordPair()  // Step 2
+    val repository = WordPairRepository(Application())
+    val firstWordPair = repository.getFirstWordPair()
+    val viewModel: WordPairViewModel = viewModel()
+
+
 
     var nativeLanguageText by remember { mutableStateOf(firstWordPair?.nativeLanguage ?: "Native Language") }
     var foreignLanguageText by remember { mutableStateOf(firstWordPair?.foreignLanguage ?: "Foreign Language") }
@@ -47,7 +53,9 @@ fun AddWordScreen(navController: NavHostController) {
                 TextField(
                     value = nativeLanguage,
                     onValueChange = { nativeLanguage = it },
-                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
                     label = { Text("Native Language") }
                 )
 
@@ -55,16 +63,27 @@ fun AddWordScreen(navController: NavHostController) {
                 TextField(
                     value = foreignLanguage,
                     onValueChange = { foreignLanguage = it },
-                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
                     label = { Text("Foreign Language") }
                 )
-                Button(onClick = {}, shape = RoundedCornerShape(4.dp), modifier = Modifier.padding(top = 24.dp).fillMaxWidth().wrapContentSize(Alignment.Center)) {
-                    Text("Next")
+                //Make the button add the word pair to the database
+                Button(onClick = {viewModel.insertWordPair(WordPair(0, nativeLanguageText, nativeLanguage, foreignLanguageText,foreignLanguage))
+                        nativeLanguage = ""
+                        foreignLanguage = ""},
+                    shape = RoundedCornerShape(4.dp), modifier = Modifier
+                        .padding(top = 24.dp)
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)) {
+                    Text("Add")
                 }
             }
         }
     }
 }
+
+
 
 
 @Preview

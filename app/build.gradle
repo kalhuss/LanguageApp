@@ -98,5 +98,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     //noinspection GradleDependency
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
+
 
 }
