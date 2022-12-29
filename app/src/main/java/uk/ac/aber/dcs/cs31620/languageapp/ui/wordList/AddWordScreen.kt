@@ -68,7 +68,7 @@ fun AddWordScreen(navController: NavHostController) {
                 )
                 //Make the button add the word pair to the database
                 Button(onClick = {
-                    if (nativeWord.isNotBlank() || foreignWord.isNotBlank()) {
+                    if (nativeWord.isNotBlank() && foreignWord.isNotBlank()) {
                         viewModel.insertWord(Word(0, nativeWord, foreignWord))
                         nativeWord = ""
                         foreignWord = ""
