@@ -22,6 +22,7 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         allLanguages = wordLanguageRepository.allLanguages
     }
 
+    //Language operations
     fun insertWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.insertWord(word)
     }
@@ -30,6 +31,11 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.insertLanguage(language)
     }
 
+    fun deleteAllLanguages() = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.deleteAllLanguages()
+    }
+
+    // Word operations
     fun updateWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.updateWord(word)
     }
@@ -44,5 +50,9 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
 
     fun deleteLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.deleteLanguage(language)
+    }
+
+    fun deleteAllWords() = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.deleteAllWords()
     }
 }

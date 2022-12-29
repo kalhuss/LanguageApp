@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface WordLanguageDao {
 
-    // Insert operations for the Language entity
+    // Language operations
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertLanguage(language: Language)
 
@@ -19,14 +19,13 @@ interface WordLanguageDao {
     @Query("DELETE FROM languages")
     suspend fun deleteAllLanguages()
 
-    // Select operations for the Language entity
     @Query("SELECT * FROM languages")
     fun getAllLanguages(): LiveData<List<Language>>
 
     @Query("SELECT * FROM languages WHERE id = :id")
     fun getLanguageById(id: Int): LiveData<Language>
 
-    // Insert operations for the Word entity
+    // Word operations
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertWord(word: Word)
 

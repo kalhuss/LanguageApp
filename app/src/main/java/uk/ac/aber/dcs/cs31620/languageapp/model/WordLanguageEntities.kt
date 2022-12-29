@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs31620.languageapp.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//Table for languages
 @Entity(tableName = "languages")
 data class Language(
     @PrimaryKey(autoGenerate = true)
@@ -11,6 +12,7 @@ data class Language(
     val foreignLanguage: String
 )
 
+//Table for words
 @Entity(tableName = "words")
 data class Word(
     @PrimaryKey(autoGenerate = true)

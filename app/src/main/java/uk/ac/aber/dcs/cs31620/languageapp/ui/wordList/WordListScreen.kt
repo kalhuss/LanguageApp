@@ -54,12 +54,14 @@ fun WordListScreen(navController: NavHostController) {
 
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.AddWord.route){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (language != null) {
+                        navController.navigate(Screen.AddWord.route){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 modifier = Modifier
@@ -75,11 +77,6 @@ fun WordListScreen(navController: NavHostController) {
         }
     }
 }
-
-
-
-
-
 
 @Preview
 @Composable

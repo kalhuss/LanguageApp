@@ -70,3 +70,5 @@ abstract class WordLanguageDatabase : RoomDatabase() {
         }
     }
 }
+
+//Remove the Delete eventually

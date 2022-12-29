@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
@@ -19,6 +20,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
+import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -28,13 +30,12 @@ fun AddWordScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
 
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
-    val language = allLanguages.observeAsState().value?.firstOrNull() ?: return
+    val language = allLanguages.observeAsState(initial = listOf()).value?.firstOrNull()?: return
 
     val nativeLanguage by remember { mutableStateOf(language.nativeLanguage ?: "Native Language")}
     val foreignLanguage by remember { mutableStateOf(language.foreignLanguage ?: "Foreign Language")}
     var nativeWord by remember { mutableStateOf("") }
     var foreignWord by remember { mutableStateOf("") }
-
 
 
     TopLevelScaffold(
@@ -71,6 +72,13 @@ fun AddWordScreen(navController: NavHostController) {
                         viewModel.insertWord(Word(0, nativeWord, foreignWord))
                         nativeWord = ""
                         foreignWord = ""
+                        navController.navigate(Screen.WordList.route){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 },
                     shape = RoundedCornerShape(4.dp), modifier = Modifier
@@ -83,9 +91,6 @@ fun AddWordScreen(navController: NavHostController) {
         }
     }
 }
-
-
-
 
 @Preview
 @Composable
