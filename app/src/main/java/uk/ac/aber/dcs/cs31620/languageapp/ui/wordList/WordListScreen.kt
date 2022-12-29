@@ -17,8 +17,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordPair
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordPairViewModel
+import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Word
+import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.WordCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
@@ -26,8 +27,10 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 
 @Composable
 fun WordListScreen(navController: NavHostController) {
-    val viewModel: WordPairViewModel = viewModel()
-    val wordPairs: LiveData<List<WordPair>> = viewModel.allWordPairs
+    val viewModel: WordLanguageViewModel = viewModel()
+    val allWords: LiveData<List<Word>> = viewModel.allWords
+    val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
+    val language = allLanguages.observeAsState().value?.firstOrNull()
 
     TopLevelScaffold(
         navController = navController
@@ -38,10 +41,12 @@ fun WordListScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
             Column {
-                wordPairs.observeAsState().value?.let { list ->
+                allWords.observeAsState().value?.let { list ->
                     if(list.isNotEmpty()){
-                        list.drop(1).forEach{ wordPair ->
-                            WordCard(wordPair)
+                        list.forEach{ word ->
+                            if (language != null) {
+                                WordCard(word, language)
+                            }
                         }
                     }
                 }

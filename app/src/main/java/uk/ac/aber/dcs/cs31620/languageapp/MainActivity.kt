@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.cs31620.languageapp
 
-import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordPairViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
