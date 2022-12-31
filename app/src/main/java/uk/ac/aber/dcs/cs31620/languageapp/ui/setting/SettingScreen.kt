@@ -26,7 +26,8 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 fun SettingScreen(navController: NavHostController) {
 
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName = "Settings"
     ) { innerPadding ->
         Surface(
             modifier = Modifier

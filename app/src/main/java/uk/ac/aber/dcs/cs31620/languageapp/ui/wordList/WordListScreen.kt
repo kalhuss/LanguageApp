@@ -1,7 +1,9 @@
 package uk.ac.aber.dcs.cs31620.languageapp.ui.wordList
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -33,19 +35,20 @@ fun WordListScreen(navController: NavHostController) {
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName = "Word List"
     ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 allWords.observeAsState().value?.let { list ->
                     if(list.isNotEmpty()){
                         list.forEach{ word ->
                             if (language != null) {
-                                WordCard(word, language)
+                                WordCard(navController ,word, language)
                             }
                         }
                     }
@@ -72,7 +75,8 @@ fun WordListScreen(navController: NavHostController) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(uk.ac.aber.dcs.cs31620.languageapp.R.string.add_word))
+                    contentDescription = stringResource(uk.ac.aber.dcs.cs31620.languageapp.R.string.add_word)
+                )
             }
         }
     }

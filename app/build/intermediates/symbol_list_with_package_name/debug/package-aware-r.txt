@@ -192,6 +192,7 @@ string default_error_message
 string default_popup_window_title
 string dialog
 string dropdown_menu
+string edit
 string expanded
 string home
 string in_progress

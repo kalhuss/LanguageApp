@@ -13,6 +13,7 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 string add_word
 string app_name
+string edit
 string home
 string nav_drawer_menu
 string quiz

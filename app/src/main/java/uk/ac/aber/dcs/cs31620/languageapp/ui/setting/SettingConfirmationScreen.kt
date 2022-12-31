@@ -28,7 +28,8 @@ fun SettingConfirmationScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
 
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName = "Settings"
     ) { innerPadding ->
         Surface(
             modifier = Modifier

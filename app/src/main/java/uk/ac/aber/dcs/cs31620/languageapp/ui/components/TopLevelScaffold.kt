@@ -11,11 +11,13 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun TopLevelScaffold(
     navController: NavHostController,
-    pageContent: @Composable (innerPadding : PaddingValues) -> Unit = { }
+    titleName: String,
+    pageContent: @Composable (innerPadding : PaddingValues) -> Unit = { },
+
 ) {
     Scaffold(
         topBar = {
-            MainPageTopAppBar(navController)
+            MainPageTopAppBar(navController, titleName)
         },
         bottomBar = {
             MainPageNavigationBar(navController)

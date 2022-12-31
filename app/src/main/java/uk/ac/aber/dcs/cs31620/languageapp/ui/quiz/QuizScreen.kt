@@ -14,7 +14,8 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 @Composable
 fun QuizScreen(navController : NavHostController){
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName = "Quiz"
     ) { innerPadding ->
         Surface(
             modifier = Modifier

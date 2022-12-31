@@ -30,16 +30,17 @@ fun AddWordScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
 
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
-    val language = allLanguages.observeAsState(initial = listOf()).value?.firstOrNull()?: return
+    val language = allLanguages.observeAsState(initial = listOf()).value.firstOrNull() ?: return
 
-    val nativeLanguage by remember { mutableStateOf(language.nativeLanguage ?: "Native Language")}
-    val foreignLanguage by remember { mutableStateOf(language.foreignLanguage ?: "Foreign Language")}
+    val nativeLanguage by remember { mutableStateOf(language.nativeLanguage)}
+    val foreignLanguage by remember { mutableStateOf(language.foreignLanguage)}
     var nativeWord by remember { mutableStateOf("") }
     var foreignWord by remember { mutableStateOf("") }
 
 
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName = "Add New Word Pair"
     ) { innerPadding ->
         Surface(
             modifier = Modifier

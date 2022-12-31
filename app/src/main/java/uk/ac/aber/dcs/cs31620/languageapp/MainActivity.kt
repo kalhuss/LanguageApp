@@ -19,6 +19,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingConfirmationScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.AddWordScreen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.EditWordScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +54,7 @@ private fun BuildNavigationGraph() {
         composable(Screen.Setting.route) { SettingScreen(navController) }
         composable(Screen.SettingConfirmation.route) { SettingConfirmationScreen(navController) }
         composable(Screen.AddWord.route) { AddWordScreen(navController)}
+        composable(Screen.EditWord.route) { EditWordScreen(navController)}
     }
 }
 

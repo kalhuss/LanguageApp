@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <string name="add_word">Add Word</string>
     <string name="app_name">Language App</string>
+    <string name="edit">Edit</string>
     <string name="home">Home</string>
     <string name="nav_drawer_menu">Navigation</string>
     <string name="quiz">Quiz</string>

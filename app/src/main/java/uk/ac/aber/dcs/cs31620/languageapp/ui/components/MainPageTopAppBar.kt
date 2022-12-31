@@ -24,10 +24,10 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPageTopAppBar(navController: NavController){
+fun MainPageTopAppBar(navController: NavController, titleName: String){
 
     TopAppBar(
-        title = { Text(stringResource(id = R.string.app_name)) },
+        title = { Text(text = (titleName)) },
         actions = {
             IconButton(onClick = {navController.navigate(Screen.Setting.route){
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -45,11 +45,12 @@ fun MainPageTopAppBar(navController: NavController){
     )
 }
 
-@Preview
-@Composable
-private fun MainPageTopAppBarPreview() {
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        MainPageTopAppBar(navController)
-    }
-}
+//@Preview
+//@Composable
+//private fun MainPageTopAppBarPreview() {
+//    val navController = rememberNavController()
+//    val titleName: String
+//    LanguageAppTheme(dynamicColor = false) {
+//        MainPageTopAppBar(navController, titleName)
+//    }
+//}

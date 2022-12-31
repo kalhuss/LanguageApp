@@ -29,13 +29,13 @@ fun MainPageNavigationBar(navController : NavController) {
             label = stringResource(id = R.string.home)
         ),
         Screen.WordList to IconGroup(
-            filledIcon = Icons.Filled.List,
-            outlineIcon = Icons.Outlined.List,
+            filledIcon = Icons.Filled.LibraryAdd,
+            outlineIcon = Icons.Outlined.LibraryAdd,
             label = stringResource(id = R.string.word_list)
         ),
         Screen.Quiz to IconGroup(
-            filledIcon = Icons.Filled.ChatBubble,
-            outlineIcon = Icons.Outlined.ChatBubble,
+            filledIcon = Icons.Filled.Quiz,
+            outlineIcon = Icons.Outlined.Quiz,
             label = stringResource(id = R.string.quiz)
         )
     )

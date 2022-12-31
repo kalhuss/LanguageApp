@@ -30,7 +30,8 @@ fun HomeScreen(navController: NavHostController) {
     var foreignLanguage by remember { mutableStateOf("") }
 
     TopLevelScaffold(
-        navController = navController
+        navController = navController,
+        titleName  = "Home"
     ) { innerPadding ->
         Surface(
             modifier = Modifier

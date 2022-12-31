@@ -111,6 +111,7 @@
     <string name="default_popup_window_title" ns1:ignore="ExtraTranslation">"Pop-Up Window"</string>
     <string name="dialog">"Dialog"</string>
     <string name="dropdown_menu">"Dropdown menu"</string>
+    <string name="edit">Edit</string>
     <string name="expanded">Expanded</string>
     <string name="home">Home</string>
     <string name="in_progress">In progress</string>

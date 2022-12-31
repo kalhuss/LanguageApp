@@ -9,6 +9,7 @@ sealed class Screen(
     object Setting : Screen("Setting")
     object AddWord : Screen("AddWord")
     object SettingConfirmation : Screen("SettingConfirmation")
+    object EditWord : Screen("EditWord")
 }
 
 val screens = listOf(
