@@ -15,6 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.ScrambleQuizScreen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.TranslationQuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingConfirmationScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
@@ -55,6 +57,8 @@ private fun BuildNavigationGraph() {
         composable(Screen.SettingConfirmation.route) { SettingConfirmationScreen(navController) }
         composable(Screen.AddWord.route) { AddWordScreen(navController)}
         composable(Screen.EditWord.route) { EditWordScreen(navController)}
+        composable(Screen.TranslationQuiz.route) { TranslationQuizScreen(navController) }
+        composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
     }
 }
 
