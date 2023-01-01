@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs31620.languageapp.ui.quiz
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -9,7 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -88,15 +92,24 @@ fun TranslationQuizScreen(navController : NavHostController) {
                 } else {
                     println("Word List: $wordsToUse")
 
-                    // Display the current word
-                    (if (displayLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord)?.let {
-                        Text(
-                            text = it,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
-                        )
+                    Card(
+                        shape = RoundedCornerShape(4.dp),
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .shadow(4.dp, RoundedCornerShape(4.dp))
+                    ) {
+                        // Display the current word
+                        (if (displayLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord)?.let {
+                            Text(
+                                text = it,
+                                style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterHorizontally)
+                            )
+                        }
                     }
 
                     // Display the text field for the user to enter their answer
@@ -114,9 +127,10 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     Button(
                         onClick = {
                             // Check if the answer is correct and update the score
-                            if (userAnswer.value == if (translationLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord) {
+                            if (userAnswer.value.equals((if (translationLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord), ignoreCase = true)) {
                                 score.value++
                             }
+
 
                             // Check if we have reached the end of the list
                             if (currentIndex.value == (wordsToUse.value?.size ?: 0) - 1) {
