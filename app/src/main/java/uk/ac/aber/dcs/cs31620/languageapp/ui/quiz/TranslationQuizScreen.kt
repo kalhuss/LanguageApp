@@ -19,6 +19,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import kotlin.math.min
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
@@ -41,6 +42,9 @@ fun TranslationQuizScreen(navController : NavHostController) {
 
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
+
+    val displayLanguage = if(Random.nextBoolean()) "native" else "foreign"
+    val translationLanguage = if (displayLanguage == "native") "foreign" else "native"
 
     TopLevelScaffold(
         navController = navController,
@@ -78,20 +82,23 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     }
                 } else {
                     println("Word List: $wordsToUse")
+
                     // Display the current word
-                    Text(
-                        text = currentWord?.nativeWord ?: "",
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                    )
+                    (if (displayLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord)?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    }
 
                     // Display the text field for the user to enter their answer
                     TextField(
                         value = userAnswer.value,
                         onValueChange = { userAnswer.value = it },
-                        label = { Text("Enter your answer here") },
+                        label = { Text("Enter your translation here") },
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth()
@@ -102,7 +109,7 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     Button(
                         onClick = {
                             // Check if the answer is correct and update the score
-                            if (userAnswer.value == currentWord?.foreignWord) {
+                            if (userAnswer.value == if (translationLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord) {
                                 score.value++
                             }
 
@@ -115,7 +122,6 @@ fun TranslationQuizScreen(navController : NavHostController) {
                                 currentWord = wordsToUse.value?.get(currentIndex.value)
 
                             }
-
                             // Reset the user answer
                             userAnswer.value = ""
                         },
