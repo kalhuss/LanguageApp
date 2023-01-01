@@ -29,11 +29,16 @@ fun TranslationQuizScreen(navController : NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
 
+    val screenOpenedBefore = remember { mutableStateOf(false) }
+
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
-    if (wordsToUse.value == null) {
-        val wordsToUseState =
-            allWords.observeAsState().value?.shuffled()?.take(min(10, allWords.value?.size ?: 0))
-        wordsToUse.value = wordsToUseState
+    if (!screenOpenedBefore.value) {
+        if (wordsToUse.value == null) {
+            val wordsToUseState =
+                allWords.observeAsState().value?.shuffled()
+                    ?.take(min(10, allWords.value?.size ?: 0))
+            wordsToUse.value = wordsToUseState
+        }
     }
 
     val currentIndex = remember { mutableStateOf(0) }
@@ -43,7 +48,7 @@ fun TranslationQuizScreen(navController : NavHostController) {
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
 
-    val displayLanguage = if(Random.nextBoolean()) "native" else "foreign"
+    val displayLanguage = if (Random.nextBoolean()) "native" else "foreign"
     val translationLanguage = if (displayLanguage == "native") "foreign" else "native"
 
     TopLevelScaffold(
