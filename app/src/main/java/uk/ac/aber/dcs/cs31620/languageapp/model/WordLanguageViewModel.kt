@@ -44,6 +44,11 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.updateLanguage(language)
     }
 
+    fun getWordById(id: Int): LiveData<Word> {
+        return wordLanguageRepository.getWordById(id)
+    }
+
+
     fun deleteWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.deleteWord(word)
     }

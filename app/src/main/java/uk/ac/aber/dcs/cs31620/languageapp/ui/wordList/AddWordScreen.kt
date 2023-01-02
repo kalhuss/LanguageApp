@@ -37,7 +37,6 @@ fun AddWordScreen(navController: NavHostController) {
     var nativeWord by remember { mutableStateOf("") }
     var foreignWord by remember { mutableStateOf("") }
 
-
     TopLevelScaffold(
         navController = navController,
         titleName = "Add New Word Pair"

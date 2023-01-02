@@ -28,60 +28,12 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
-//@Composable
-//fun WordCard(word: Word, language: Language) {
-//    Card(
-//        shape = RoundedCornerShape(4.dp),
-//        modifier = Modifier.padding(8.dp).fillMaxWidth()
-//    ) {
-//        Row {
-//            Column(
-//                modifier = Modifier.weight(1f)
-//            ) {
-//                Text(
-//                    text = language.nativeLanguage,
-//                    style = TextStyle(
-//                        fontSize = 14.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        color = MaterialTheme.colors.onBackground
-//                    )
-//                )
-//                Text(
-//                    text = word.nativeWord,
-//                    style = TextStyle(
-//                        fontSize = 18.sp,
-//                        color = MaterialTheme.colors.onBackground
-//                    )
-//                )
-//            }
-//            Column(
-//                modifier = Modifier.weight(1f)
-//            ) {
-//                Text(
-//                    text = language.foreignLanguage,
-//                    style = TextStyle(
-//                        fontSize = 14.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        color = MaterialTheme.colors.onBackground
-//                    )
-//                )
-//                Text(
-//                    text = word.foreignWord,
-//                    style = TextStyle(
-//                        fontSize = 18.sp,
-//                        color = MaterialTheme.colors.onBackground
-//                    )
-//                )
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun WordCard(navController: NavHostController, word: Word, language: Language) {
     val textStyle = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
     val subheadStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onBackground)
     val isIconButtonClicked = remember { mutableStateOf(false) }
+
     Card(
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier.padding(8.dp).fillMaxWidth().shadow(4.dp, RoundedCornerShape(4.dp))
@@ -97,7 +49,8 @@ fun WordCard(navController: NavHostController, word: Word, language: Language) {
 
             }
             IconButton(onClick = {
-                navController.navigate(Screen.EditWord.route){
+                val wordID = word.id
+                navController.navigate(Screen.EditWord.passID(wordID.toString())){
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

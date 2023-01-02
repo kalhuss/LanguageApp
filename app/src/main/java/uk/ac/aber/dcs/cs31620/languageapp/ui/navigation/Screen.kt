@@ -1,5 +1,9 @@
 package uk.ac.aber.dcs.cs31620.languageapp.ui.navigation
 
+import android.os.Bundle
+
+const val wordarg = "wordID"
+
 sealed class Screen(
     val route: String
 ) {
@@ -9,7 +13,11 @@ sealed class Screen(
     object Setting : Screen("Setting")
     object AddWord : Screen("AddWord")
     object SettingConfirmation : Screen("SettingConfirmation")
-    object EditWord : Screen("EditWord")
+    object EditWord : Screen("EditWord/{$wordarg}"){
+        fun passID(wordID: String): String {
+            return this.route.replace(oldValue = "{$wordarg}", newValue = wordID.toString())
+        }
+    }
     object TranslationQuiz : Screen("TranslationQuiz")
     object ScrambleQuiz : Screen("ScrambleQuiz")
 }

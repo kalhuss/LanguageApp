@@ -34,6 +34,10 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.insertWord(word)
     }
 
+    fun getWordById(id: Int): LiveData<Word> {
+        return wordLanguageDao.getWordById(id)
+    }
+
     suspend fun updateWord(word: Word) {
         wordLanguageDao.updateWord(word)
     }
