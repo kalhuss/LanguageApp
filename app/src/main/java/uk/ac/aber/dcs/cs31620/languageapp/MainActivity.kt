@@ -60,19 +60,9 @@ private fun BuildNavigationGraph() {
         composable(Screen.Setting.route) { SettingScreen(navController) }
         composable(Screen.SettingConfirmation.route) { SettingConfirmationScreen(navController) }
         composable(Screen.AddWord.route) { AddWordScreen(navController)}
-
+        composable(Screen.EditWord.route){ EditWordScreen(navController, Screen.EditWord.route.substringAfterLast("/").toInt())}
         composable(Screen.TranslationQuiz.route) { TranslationQuizScreen(navController) }
         composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
-
-        composable(Screen.EditWord.route,
-            arguments = listOf(navArgument(WORD_ID){
-                type = NavType.IntType
-            })
-        ) {
-            val wordID = it.arguments?.getInt(WORD_ID)
-            println("Main Activity: ${it.arguments?.getInt(WORD_ID).toString()}")
-            wordID?.let{id -> EditWordScreen(navController, id)}
-        }
 
     }
 }

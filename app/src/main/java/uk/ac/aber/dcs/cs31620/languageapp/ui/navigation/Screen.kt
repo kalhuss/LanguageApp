@@ -13,13 +13,11 @@ sealed class Screen(
     object SettingConfirmation : Screen("SettingConfirmation")
     object EditWord : Screen("EditWord/{$WORD_ID}"){
         fun passID(wordID: String): String {
-            println("passID called with wordID $wordID")
-            //EditWord.route = this.route.replace("{$WORD_ID}", wordID)
             EditWord.route = "EditWord/$wordID"
-            println("Updated EditWord route = ${EditWord.route}")
             return EditWord.route
         }
     }
+
     object TranslationQuiz : Screen("TranslationQuiz")
     object ScrambleQuiz : Screen("ScrambleQuiz")
 }

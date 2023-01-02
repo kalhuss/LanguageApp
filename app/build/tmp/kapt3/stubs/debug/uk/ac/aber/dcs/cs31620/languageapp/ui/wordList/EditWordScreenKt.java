@@ -7,6 +7,7 @@ public final class EditWordScreenKt {
     
     @androidx.compose.runtime.Composable()
     @android.annotation.SuppressLint(value = {"UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor"})
+    @kotlin.OptIn(markerClass = {androidx.compose.material3.ExperimentalMaterial3Api.class})
     public static final void EditWordScreen(@org.jetbrains.annotations.NotNull()
     androidx.navigation.NavHostController navController, int wordID) {
     }

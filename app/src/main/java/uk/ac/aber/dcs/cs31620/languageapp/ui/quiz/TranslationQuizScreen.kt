@@ -90,7 +90,6 @@ fun TranslationQuizScreen(navController : NavHostController) {
                         Text("go back to menu")
                     }
                 } else {
-                    println("Word List: $wordsToUse")
 
                     Card(
                         shape = RoundedCornerShape(4.dp),

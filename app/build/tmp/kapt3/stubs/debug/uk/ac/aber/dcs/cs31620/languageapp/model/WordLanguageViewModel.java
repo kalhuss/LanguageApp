@@ -43,14 +43,14 @@ public final class WordLanguageViewModel extends androidx.lifecycle.AndroidViewM
     }
     
     @org.jetbrains.annotations.NotNull()
-    public final kotlinx.coroutines.Job updateWord(@org.jetbrains.annotations.NotNull()
-    uk.ac.aber.dcs.cs31620.languageapp.model.Word word) {
+    public final kotlinx.coroutines.Job updateLanguage(@org.jetbrains.annotations.NotNull()
+    uk.ac.aber.dcs.cs31620.languageapp.model.Language language) {
         return null;
     }
     
     @org.jetbrains.annotations.NotNull()
-    public final kotlinx.coroutines.Job updateLanguage(@org.jetbrains.annotations.NotNull()
-    uk.ac.aber.dcs.cs31620.languageapp.model.Language language) {
+    public final kotlinx.coroutines.Job updateWord(@org.jetbrains.annotations.NotNull()
+    uk.ac.aber.dcs.cs31620.languageapp.model.Word word) {
         return null;
     }
     

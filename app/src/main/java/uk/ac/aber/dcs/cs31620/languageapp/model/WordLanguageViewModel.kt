@@ -35,13 +35,13 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.deleteAllLanguages()
     }
 
+    fun updateLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.updateLanguage(language)
+    }
+
     // Word operations
     fun updateWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.updateWord(word)
-    }
-
-    fun updateLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.updateLanguage(language)
     }
 
     fun getWordById(id: Int): LiveData<Word> {

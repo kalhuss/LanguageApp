@@ -17,6 +17,6 @@ data class Language(
 data class Word(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val nativeWord: String,
-    val foreignWord: String
+    var nativeWord: String,
+    var foreignWord: String
 )

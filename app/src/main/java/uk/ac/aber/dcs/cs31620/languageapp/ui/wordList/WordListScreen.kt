@@ -83,13 +83,3 @@ fun WordListScreen(navController: NavHostController) {
         }
     }
 }
-
-
-@Preview
-@Composable
-fun WordListScreenPreview() {
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        WordListScreen(navController)
-    }
-}
