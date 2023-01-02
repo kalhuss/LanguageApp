@@ -33,7 +33,7 @@ fun WordCard(navController: NavHostController, word: Word, language: Language) {
     val textStyle = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
     val subheadStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onBackground)
     val isIconButtonClicked = remember { mutableStateOf(false) }
-
+    val wordID = remember { mutableStateOf(0)}
     Card(
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier.padding(8.dp).fillMaxWidth().shadow(4.dp, RoundedCornerShape(4.dp))
@@ -49,8 +49,8 @@ fun WordCard(navController: NavHostController, word: Word, language: Language) {
 
             }
             IconButton(onClick = {
-                val wordID = word.id
-                navController.navigate(Screen.EditWord.passID(wordID.toString())){
+                wordID.value = word.id
+                navController.navigate(Screen.EditWord.passID(wordID.value.toString())){
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

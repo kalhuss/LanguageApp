@@ -17,7 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
-import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.wordarg
+import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.WORD_ID
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.ScrambleQuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.TranslationQuizScreen
@@ -65,14 +65,14 @@ private fun BuildNavigationGraph() {
         composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
 
         composable(Screen.EditWord.route,
-            arguments = listOf(navArgument(wordarg){
+            arguments = listOf(navArgument(WORD_ID){
                 type = NavType.IntType
             })
         ) {
-            println("Main Activity: ${it.arguments?.getInt(wordarg).toString()}")
-            it.arguments?.getInt(wordarg)?.let { wordID -> EditWordScreen(navController, wordID) }
+            val wordID = it.arguments?.getInt(WORD_ID)
+            println("Main Activity: ${it.arguments?.getInt(WORD_ID).toString()}")
+            wordID?.let{id -> EditWordScreen(navController, id)}
         }
-
 
     }
 }
