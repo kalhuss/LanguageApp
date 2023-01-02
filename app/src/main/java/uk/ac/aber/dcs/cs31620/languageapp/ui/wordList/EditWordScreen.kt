@@ -1,12 +1,12 @@
 package uk.ac.aber.dcs.cs31620.languageapp.ui.wordList
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -92,14 +92,20 @@ fun EditWordScreen(navController : NavHostController, wordID: Int){
                 .fillMaxSize()
         ) {
             Column() {
-                Text(language?.nativeLanguage ?: "")
+                Text(language?.nativeLanguage ?: "", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
                 TextField(nativeText.value ?: "",
-                    {newValue -> nativeText.value = newValue}
+                    {newValue -> nativeText.value = newValue},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
                 )
-                Text(language?.foreignLanguage ?: "")
+                Text(language?.foreignLanguage ?: "", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
                 TextField(
                     foreignText.value ?: "",
-                    { newValue -> foreignText.value = newValue }
+                    { newValue -> foreignText.value = newValue },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
                 )
 
                 Button(onClick = {
@@ -113,8 +119,12 @@ fun EditWordScreen(navController : NavHostController, wordID: Int){
                             restoreState = true
                         }
                     }
-                }) {
-                    Text(text = "Submit")
+                },
+                    shape = RoundedCornerShape(4.dp), modifier = Modifier
+                        .padding(top = 24.dp)
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)) {
+                    Text("Submit Edit")
                 }
             }
 
