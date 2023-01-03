@@ -71,12 +71,3 @@ fun MainPageNavigationBar(navController : NavController) {
         }
     }
 }
-
-@Preview
-@Composable
-private fun MainPageNavigationBarPreview() {
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        MainPageNavigationBar(navController)
-    }
-}

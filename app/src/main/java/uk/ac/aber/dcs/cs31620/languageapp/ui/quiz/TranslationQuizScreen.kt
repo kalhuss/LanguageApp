@@ -12,14 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
+import uk.ac.aber.dcs.cs31620.languageapp.ui.components.QuizResults
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import kotlin.math.min
@@ -32,7 +35,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
 
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
-
+    val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
+    val language = allLanguages.observeAsState().value?.firstOrNull()
     val screenOpenedBefore = remember { mutableStateOf(false) }
 
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
@@ -66,50 +70,55 @@ fun TranslationQuizScreen(navController : NavHostController) {
         ) {
             Column {
                 if (quizFinished.value) {
-                    Text(
-                        text = "Your score is: ${score.value}/${wordsToUse.value?.size ?: 0}",
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                    )
-
-                    Button(
-                        onClick = {
-                            navController.navigate(Screen.Quiz.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    inclusive = true
-                                }
+                    QuizResults(score.value, wordsToUse.value?.size ?: 0) {
+                        navController.navigate(Screen.Quiz.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
                             }
-                        },
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Text("go back to menu")
+                        }
                     }
                 } else {
+
+                    Text(
+                        text = "What is this translated into ${if (displayLanguage == "native") language?.foreignLanguage else language?.nativeLanguage}?",
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onBackground
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
 
                     Card(
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth()
+                            .height(75.dp)
                             .shadow(4.dp, RoundedCornerShape(4.dp))
                     ) {
                         // Display the current word
                         (if (displayLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord)?.let {
                             Text(
                                 text = it,
+                                textAlign = TextAlign.Center,
                                 style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth()
-                                    .align(Alignment.CenterHorizontally)
                             )
                         }
                     }
+
+                    Text(
+                        text = "${currentIndex.value + 1} of ${wordsToUse.value?.size ?: 0}",
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onBackground),
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                     // Display the text field for the user to enter their answer
                     TextField(
@@ -117,9 +126,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
                         onValueChange = { userAnswer.value = it },
                         label = { Text("Enter your translation here") },
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(top = 24.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
                             .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
                     )
 
                     // Display the button to submit the answer
@@ -145,7 +153,6 @@ fun TranslationQuizScreen(navController : NavHostController) {
                         },
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
                             .align(Alignment.CenterHorizontally)
                     ) {
                         Text(text = "Submit")
@@ -155,70 +162,3 @@ fun TranslationQuizScreen(navController : NavHostController) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
-//@Composable
-//fun TranslationQuizScreen(navController : NavHostController){
-//    val viewModel : WordLanguageViewModel = viewModel()
-//    val allWords : LiveData<List<Word>> = viewModel.allWords
-//
-//    val wordsToUse = allWords.value?.shuffled()?.take(min(10, allWords.value?.size ?: 0))
-//
-//    TopLevelScaffold(navController = navController, titleName = "Translation Quiz"){ innerPadding ->
-//        Surface (
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//        ){
-//            Column(){
-//
-//            }
-//        }
-//    }
-//}
-
-
-
-
-
-
-
-
-
-
-
-

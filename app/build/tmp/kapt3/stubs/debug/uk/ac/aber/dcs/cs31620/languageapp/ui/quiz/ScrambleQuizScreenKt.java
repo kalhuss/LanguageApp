@@ -7,6 +7,7 @@ public final class ScrambleQuizScreenKt {
     
     @androidx.compose.runtime.Composable()
     @android.annotation.SuppressLint(value = {"UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor"})
+    @kotlin.OptIn(markerClass = {androidx.compose.material3.ExperimentalMaterial3Api.class})
     public static final void ScrambleQuizScreen(@org.jetbrains.annotations.NotNull()
     androidx.navigation.NavHostController navController) {
     }

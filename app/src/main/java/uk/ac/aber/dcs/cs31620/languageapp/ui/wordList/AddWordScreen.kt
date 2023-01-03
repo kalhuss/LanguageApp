@@ -54,7 +54,6 @@ fun AddWordScreen(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    //label = { Text("Native Language") }
                 )
 
                 Text(foreignLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
@@ -64,7 +63,6 @@ fun AddWordScreen(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    //label = { Text("Foreign Language") }
                 )
                 //Make the button add the word pair to the database
                 Button(onClick = {
@@ -89,14 +87,5 @@ fun AddWordScreen(navController: NavHostController) {
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun AddWordScreenPreview(){
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        AddWordScreen(navController)
     }
 }

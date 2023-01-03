@@ -1,7 +1,6 @@
 package uk.ac.aber.dcs.cs31620.languageapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,14 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
-import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.WORD_ID
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.ScrambleQuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.TranslationQuizScreen
@@ -64,13 +60,5 @@ private fun BuildNavigationGraph() {
         composable(Screen.TranslationQuiz.route) { TranslationQuizScreen(navController) }
         composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
 
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LanguageAppTheme {
-        BuildNavigationGraph()
     }
 }

@@ -2,14 +2,16 @@ package uk.ac.aber.dcs.cs31620.languageapp.ui.setting
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,8 +39,19 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
             Column() {
-                Text("Are you sure you want to reset your language? This will remove all of the vocabulary in the list.")
-                Row(modifier = Modifier.padding(top = 24.dp)) {
+
+                Text(
+                    "Are you sure\n you want to reset your language?\n this will remove all of the\n vocabulary in the list",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .padding(top = 24.dp)
+                        .wrapContentSize(Alignment.Center)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+
+                Row(modifier = Modifier.padding(top = 24.dp).fillMaxWidth().wrapContentSize(Alignment.Center)) {
                     Button(
                         onClick = {
                             navController.navigate(Screen.Setting.route){
@@ -51,7 +64,8 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                         },
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
-                            .weight(1f)
+                            //.weight(1f)
+                            .padding(horizontal = 8.dp)
                             .wrapContentSize(Alignment.Center)
                     ) {
                         Text("Cancel")
@@ -71,7 +85,8 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                         },
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
-                            .weight(1f)
+                            //.weight(1f)
+                            .padding(horizontal = 8.dp)
                             .wrapContentSize(Alignment.Center)
                     ) {
                         Text("Confirm")
@@ -79,16 +94,5 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                 }
             }
         }
-    }
-}
-
-
-
-@Preview
-@Composable
-private fun SettingScreenPreview(){
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        SettingConfirmationScreen(navController)
     }
 }

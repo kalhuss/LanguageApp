@@ -9,16 +9,22 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
+import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -26,6 +32,12 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 fun HomeScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
+    val allWords: LiveData<List<Word>> = viewModel.allWords
+
+    var numWords = allWords.observeAsState().value?.size
+    if(numWords == null){
+        numWords = allWords.observeAsState().value?.size
+    }
 
     var nativeLanguage by remember { mutableStateOf("") }
     var foreignLanguage by remember { mutableStateOf("") }
@@ -39,14 +51,16 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(){
+            Column(modifier = Modifier.fillMaxHeight()){
                 val language = allLanguages.observeAsState().value?.firstOrNull()
                 if (language == null) {
                     Text("Native Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
                     TextField(
                         value = nativeLanguage,
                         onValueChange = { nativeLanguage = it },
-                        modifier = Modifier.fillMaxWidth().padding(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
                         label = { Text("Native Language") }
                     )
 
@@ -54,27 +68,40 @@ fun HomeScreen(navController: NavHostController) {
                     TextField(
                         value = foreignLanguage,
                         onValueChange = { foreignLanguage = it },
-                        modifier = Modifier.fillMaxWidth().padding(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
                         label = { Text("Foreign Language") }
                     )
                     Button(onClick = {
                         viewModel.insertLanguage(Language(0, nativeLanguage, foreignLanguage))
-                    }, shape = RoundedCornerShape(4.dp), modifier = Modifier.padding(top = 24.dp).fillMaxWidth().wrapContentSize(Alignment.Center)) {
+                    }, shape = RoundedCornerShape(4.dp), modifier = Modifier
+                        .padding(top = 24.dp)
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)) {
                         Text("Next")
                     }
                 } else {
-                    Text("You are learning: ${language.foreignLanguage}", modifier = Modifier.padding(top = 24.dp))
+                    Text(
+                        "Welcome Back To\n Your ${language.foreignLanguage} Journey",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .wrapContentSize(Alignment.Center)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                    Text(
+                        "Words learnt: $numWords",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .wrapContentSize(Alignment.Center)
+                            .align(Alignment.CenterHorizontally)
+                    )
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun HomeScreenPreview(){
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        HomeScreen(navController)
     }
 }

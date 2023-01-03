@@ -46,21 +46,11 @@ fun SettingScreen(navController: NavHostController) {
                 },
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
-                    .padding(top = 24.dp)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {
                 Text("Reset Language")
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun SettingScreenPreview(){
-    val navController = rememberNavController()
-    LanguageAppTheme(dynamicColor = false) {
-        SettingScreen(navController)
     }
 }

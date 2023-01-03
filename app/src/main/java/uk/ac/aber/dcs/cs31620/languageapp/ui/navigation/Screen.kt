@@ -17,7 +17,6 @@ sealed class Screen(
             return EditWord.route
         }
     }
-
     object TranslationQuiz : Screen("TranslationQuiz")
     object ScrambleQuiz : Screen("ScrambleQuiz")
 }

@@ -44,13 +44,3 @@ fun MainPageTopAppBar(navController: NavController, titleName: String){
         }
     )
 }
-
-//@Preview
-//@Composable
-//private fun MainPageTopAppBarPreview() {
-//    val navController = rememberNavController()
-//    val titleName: String
-//    LanguageAppTheme(dynamicColor = false) {
-//        MainPageTopAppBar(navController, titleName)
-//    }
-//}

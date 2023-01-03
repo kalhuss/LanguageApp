@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageDao
 
 
 class WordLanguageRepository(application: Application) {
