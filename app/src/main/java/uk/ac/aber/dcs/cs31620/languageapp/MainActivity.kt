@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,17 +34,17 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val viewModel: WordLanguageViewModel = viewModel()
-            val getTheme: ThemeMode? = viewModel.getTheme()
-            val isDark = getTheme?.isDark
-            println(isDark)
-            val darkTheme = remember { mutableStateOf(false)}
+            val allTheme: LiveData<List<ThemeMode>> = viewModel.allTheme
+            val getTheme = allTheme.observeAsState().value?.firstOrNull()
 
-            LanguageAppTheme(darkTheme.value)  {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    BuildNavigationGraph()
+            if (getTheme != null) {
+                LanguageAppTheme(getTheme.isDark)  {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        BuildNavigationGraph()
+                    }
                 }
             }
         }

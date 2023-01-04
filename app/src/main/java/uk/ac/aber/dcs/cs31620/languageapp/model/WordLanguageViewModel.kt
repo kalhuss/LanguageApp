@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageDatabase
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageRepository
@@ -14,12 +16,14 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
     private val wordLanguageRepository: WordLanguageRepository
     val allWords: LiveData<List<Word>>
     val allLanguages: LiveData<List<Language>>
+    val allTheme: LiveData<List<ThemeMode>>
 
     init {
         val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
         wordLanguageRepository = WordLanguageRepository(application)
         allWords = wordLanguageRepository.allWords
         allLanguages = wordLanguageRepository.allLanguages
+        allTheme = wordLanguageRepository.allTheme
     }
 
     //Language operations
@@ -39,6 +43,10 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.updateLanguage(language)
     }
 
+    fun deleteLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.deleteLanguage(language)
+    }
+
     // Word operations
     fun updateWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.updateWord(word)
@@ -46,15 +54,6 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
 
     fun getWordById(id: Int): LiveData<Word> {
         return wordLanguageRepository.getWordById(id)
-    }
-
-
-    fun deleteWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.deleteWord(word)
-    }
-
-    fun deleteLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.deleteLanguage(language)
     }
 
     fun deleteWordById(id: Int) = viewModelScope.launch(Dispatchers.IO) {
@@ -65,12 +64,16 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.deleteAllWords()
     }
 
-    //Theme operations
-    suspend fun setTheme(theme: ThemeMode) {
-        wordLanguageRepository.setTheme(theme)
+    fun countWords(): LiveData<Int> {
+        return wordLanguageRepository.countWords()
     }
 
-    fun getTheme(): ThemeMode? {
-        return wordLanguageRepository.getTheme()
+    //Theme operations
+    fun insertTheme(theme: ThemeMode) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.insertTheme(theme)
+    }
+
+    fun updateTheme(theme: ThemeMode) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.updateTheme(theme)
     }
 }

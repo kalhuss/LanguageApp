@@ -24,5 +24,7 @@ data class Word(
 //Table for theme
 @Entity(tableName = "theme")
 data class ThemeMode(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val isDark: Boolean
 )

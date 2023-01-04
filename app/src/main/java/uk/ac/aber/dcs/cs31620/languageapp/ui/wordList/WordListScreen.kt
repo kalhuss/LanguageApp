@@ -47,6 +47,7 @@ fun WordListScreen(navController: NavHostController) {
                             if (language != null) {
                                 WordCard(navController ,word, language)
                             }
+                            println(word.id)
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs31620.languageapp.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface WordLanguageDao {
@@ -32,9 +33,6 @@ interface WordLanguageDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWord(word: Word)
 
-    @Delete
-    suspend fun deleteWord(word: Word)
-
     @Query("DELETE FROM words WHERE id = :id")
     suspend fun deleteWordById(id: Int)
 
@@ -51,10 +49,17 @@ interface WordLanguageDao {
     @Query("SELECT * FROM words LIMIT 1")
     fun getFirstWord(): LiveData<Word>
 
+    @Query("SELECT COUNT(nativeWord) FROM words WHERE nativeWord IS NOT NULL")
+    fun countWords(): LiveData<Int>
+
     // Theme operations
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTheme(theme: ThemeMode)
 
-    @Query("SELECT * FROM theme LIMIT 1")
-    fun getTheme(): ThemeMode?
+    @Query("SELECT * FROM theme")
+    fun getAllTheme(): LiveData<List<ThemeMode>>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateTheme(theme: ThemeMode)
+
 }

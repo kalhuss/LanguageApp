@@ -6,11 +6,11 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 
-
 class WordLanguageRepository(application: Application) {
     private val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
     val allLanguages: LiveData<List<Language>> = wordLanguageDao.getAllLanguages()
     val allWords: LiveData<List<Word>> = wordLanguageDao.getAllWords()
+    val allTheme: LiveData<List<ThemeMode>> = wordLanguageDao.getAllTheme()
 
     //Language operations
     suspend fun insertLanguage(language: Language) {
@@ -42,10 +42,6 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.updateWord(word)
     }
 
-    suspend fun deleteWord(word: Word) {
-        wordLanguageDao.deleteWord(word)
-    }
-
     suspend fun deleteWordById(id: Int) {
         wordLanguageDao.deleteWordById(id)
     }
@@ -54,12 +50,16 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.deleteAllWords()
     }
 
+    fun countWords(): LiveData<Int> {
+        return wordLanguageDao.countWords()
+    }
+
     //Theme operations
-    suspend fun setTheme(theme: ThemeMode) {
+    suspend fun insertTheme(theme: ThemeMode) {
         wordLanguageDao.insertTheme(theme)
     }
 
-    fun getTheme(): ThemeMode? {
-        return wordLanguageDao.getTheme()
+    suspend fun updateTheme(theme: ThemeMode) {
+        wordLanguageDao.updateTheme(theme)
     }
 }

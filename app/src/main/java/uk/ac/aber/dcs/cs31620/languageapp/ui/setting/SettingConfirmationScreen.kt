@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.sqlite.db.SimpleSQLiteQuery
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
@@ -67,8 +68,8 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                     //Onclick deletes all values from word database and language database
                     Button(
                         onClick = {
-                            viewModel.deleteAllWords()
                             viewModel.deleteAllLanguages()
+                            viewModel.deleteAllWords()
                             navController.navigate(Screen.Home.route){
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true

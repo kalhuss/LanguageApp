@@ -14,8 +14,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
+import uk.ac.aber.dcs.cs31620.languageapp.ui.components.WordCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
@@ -25,6 +27,17 @@ fun QuizScreen(navController : NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
+    val allWords: LiveData<List<Word>> = viewModel.allWords
+
+    var empty = true
+    allWords.observeAsState().value?.let { list ->
+        if(list.isNotEmpty()){
+            if(language != null){
+                empty = false
+            }
+        }
+    }
+    println("Empty list: $empty")
 
     TopLevelScaffold(
         navController = navController,
@@ -38,7 +51,7 @@ fun QuizScreen(navController : NavHostController) {
             Column(modifier = Modifier.fillMaxHeight()) {
                 Button(
                     onClick = {
-                        if (language != null) {
+                        if ((language != null) && !empty) {
                             navController.navigate(Screen.TranslationQuiz.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -61,12 +74,14 @@ fun QuizScreen(navController : NavHostController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        navController.navigate(Screen.ScrambleQuiz.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                        if ((language != null) && !empty) {
+                            navController.navigate(Screen.ScrambleQuiz.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     },
                     shape = RoundedCornerShape(4.dp), modifier = Modifier

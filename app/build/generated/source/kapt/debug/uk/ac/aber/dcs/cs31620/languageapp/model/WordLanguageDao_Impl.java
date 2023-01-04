@@ -13,6 +13,7 @@ import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Class;
 import java.lang.Exception;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -36,11 +37,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
 
   private final EntityDeletionOrUpdateAdapter<Language> __deletionAdapterOfLanguage;
 
-  private final EntityDeletionOrUpdateAdapter<Word> __deletionAdapterOfWord;
-
   private final EntityDeletionOrUpdateAdapter<Language> __updateAdapterOfLanguage;
 
   private final EntityDeletionOrUpdateAdapter<Word> __updateAdapterOfWord;
+
+  private final EntityDeletionOrUpdateAdapter<ThemeMode> __updateAdapterOfThemeMode;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAllLanguages;
 
@@ -95,13 +96,14 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
     this.__insertionAdapterOfThemeMode = new EntityInsertionAdapter<ThemeMode>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `theme` (`isDark`) VALUES (?)";
+        return "INSERT OR IGNORE INTO `theme` (`id`,`isDark`) VALUES (nullif(?, 0),?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, ThemeMode value) {
+        stmt.bindLong(1, value.getId());
         final int _tmp = value.isDark() ? 1 : 0;
-        stmt.bindLong(1, _tmp);
+        stmt.bindLong(2, _tmp);
       }
     };
     this.__deletionAdapterOfLanguage = new EntityDeletionOrUpdateAdapter<Language>(__db) {
@@ -112,17 +114,6 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Language value) {
-        stmt.bindLong(1, value.getId());
-      }
-    };
-    this.__deletionAdapterOfWord = new EntityDeletionOrUpdateAdapter<Word>(__db) {
-      @Override
-      public String createQuery() {
-        return "DELETE FROM `words` WHERE `id` = ?";
-      }
-
-      @Override
-      public void bind(SupportSQLiteStatement stmt, Word value) {
         stmt.bindLong(1, value.getId());
       }
     };
@@ -168,6 +159,20 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           stmt.bindString(3, value.getForeignWord());
         }
         stmt.bindLong(4, value.getId());
+      }
+    };
+    this.__updateAdapterOfThemeMode = new EntityDeletionOrUpdateAdapter<ThemeMode>(__db) {
+      @Override
+      public String createQuery() {
+        return "UPDATE OR REPLACE `theme` SET `id` = ?,`isDark` = ? WHERE `id` = ?";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, ThemeMode value) {
+        stmt.bindLong(1, value.getId());
+        final int _tmp = value.isDark() ? 1 : 0;
+        stmt.bindLong(2, _tmp);
+        stmt.bindLong(3, value.getId());
       }
     };
     this.__preparedStmtOfDeleteAllLanguages = new SharedSQLiteStatement(__db) {
@@ -264,23 +269,6 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public Object deleteWord(final Word word, final Continuation<? super Unit> continuation) {
-    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
-      @Override
-      public Unit call() throws Exception {
-        __db.beginTransaction();
-        try {
-          __deletionAdapterOfWord.handle(word);
-          __db.setTransactionSuccessful();
-          return Unit.INSTANCE;
-        } finally {
-          __db.endTransaction();
-        }
-      }
-    }, continuation);
-  }
-
-  @Override
   public Object updateLanguage(final Language language,
       final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
@@ -306,6 +294,23 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         __db.beginTransaction();
         try {
           __updateAdapterOfWord.handle(word);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object updateTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __updateAdapterOfThemeMode.handle(theme);
           __db.setTransactionSuccessful();
           return Unit.INSTANCE;
         } finally {
@@ -604,17 +609,73 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public ThemeMode getTheme() {
-    final String _sql = "SELECT * FROM theme LIMIT 1";
+  public LiveData<Integer> countWords() {
+    final String _sql = "SELECT COUNT(nativeWord) FROM words WHERE nativeWord IS NOT NULL";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
-    __db.assertNotSuspendingTransaction();
-    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
-    try {
-      return _result;
-    } finally {
-      _cursor.close();
-      _statement.release();
-    }
+    return __db.getInvalidationTracker().createLiveData(new String[]{"words"}, false, new Callable<Integer>() {
+      @Override
+      public Integer call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final Integer _result;
+          if(_cursor.moveToFirst()) {
+            final Integer _tmp;
+            if (_cursor.isNull(0)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getInt(0);
+            }
+            _result = _tmp;
+          } else {
+            _result = null;
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
+  public LiveData<List<ThemeMode>> getAllTheme() {
+    final String _sql = "SELECT * FROM theme";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    return __db.getInvalidationTracker().createLiveData(new String[]{"theme"}, false, new Callable<List<ThemeMode>>() {
+      @Override
+      public List<ThemeMode> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfIsDark = CursorUtil.getColumnIndexOrThrow(_cursor, "isDark");
+          final List<ThemeMode> _result = new ArrayList<ThemeMode>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final ThemeMode _item;
+            final int _tmpId;
+            _tmpId = _cursor.getInt(_cursorIndexOfId);
+            final boolean _tmpIsDark;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsDark);
+            _tmpIsDark = _tmp != 0;
+            _item = new ThemeMode(_tmpId,_tmpIsDark);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
   }
 
   public static List<Class<?>> getRequiredConverters() {
