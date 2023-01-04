@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
+import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
@@ -28,7 +33,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LanguageAppTheme {
+
+            val viewModel: WordLanguageViewModel = viewModel()
+            val getTheme: ThemeMode? = viewModel.getTheme()
+            val isDark = getTheme?.isDark
+            println(isDark)
+            val darkTheme = remember { mutableStateOf(false)}
+
+            LanguageAppTheme(darkTheme.value)  {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -59,6 +71,5 @@ private fun BuildNavigationGraph() {
         composable(Screen.EditWord.route){ EditWordScreen(navController, Screen.EditWord.route.substringAfterLast("/").toInt())}
         composable(Screen.TranslationQuiz.route) { TranslationQuizScreen(navController) }
         composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
-
     }
 }

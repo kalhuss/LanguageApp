@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +41,15 @@ fun HomeScreen(navController: NavHostController) {
 
     var nativeLanguage by remember { mutableStateOf("") }
     var foreignLanguage by remember { mutableStateOf("") }
+    val language = allLanguages.observeAsState().value?.firstOrNull()
+
+    val welcomeText = buildAnnotatedString {
+        append("Welcome Back To\n Your ")
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)){
+            append("${language?.foreignLanguage} ")
+        }
+        append("Journey")
+    }
 
     TopLevelScaffold(
         navController = navController,
@@ -52,7 +61,6 @@ fun HomeScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
             Column(modifier = Modifier.fillMaxHeight()){
-                val language = allLanguages.observeAsState().value?.firstOrNull()
                 if (language == null) {
                     Text("Native Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
                     TextField(
@@ -83,7 +91,7 @@ fun HomeScreen(navController: NavHostController) {
                     }
                 } else {
                     Text(
-                        "Welcome Back To\n Your ${language.foreignLanguage} Journey",
+                        welcomeText,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                         modifier = Modifier

@@ -35,6 +35,9 @@ interface WordLanguageDao {
     @Delete
     suspend fun deleteWord(word: Word)
 
+    @Query("DELETE FROM words WHERE id = :id")
+    suspend fun deleteWordById(id: Int)
+
     @Query("DELETE FROM words")
     suspend fun deleteAllWords()
 
@@ -47,4 +50,11 @@ interface WordLanguageDao {
 
     @Query("SELECT * FROM words LIMIT 1")
     fun getFirstWord(): LiveData<Word>
+
+    // Theme operations
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTheme(theme: ThemeMode)
+
+    @Query("SELECT * FROM theme LIMIT 1")
+    fun getTheme(): ThemeMode?
 }

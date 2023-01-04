@@ -32,6 +32,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
 
   private final EntityInsertionAdapter<Word> __insertionAdapterOfWord;
 
+  private final EntityInsertionAdapter<ThemeMode> __insertionAdapterOfThemeMode;
+
   private final EntityDeletionOrUpdateAdapter<Language> __deletionAdapterOfLanguage;
 
   private final EntityDeletionOrUpdateAdapter<Word> __deletionAdapterOfWord;
@@ -41,6 +43,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   private final EntityDeletionOrUpdateAdapter<Word> __updateAdapterOfWord;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAllLanguages;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteWordById;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAllWords;
 
@@ -86,6 +90,18 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         } else {
           stmt.bindString(3, value.getForeignWord());
         }
+      }
+    };
+    this.__insertionAdapterOfThemeMode = new EntityInsertionAdapter<ThemeMode>(__db) {
+      @Override
+      public String createQuery() {
+        return "INSERT OR REPLACE INTO `theme` (`isDark`) VALUES (?)";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, ThemeMode value) {
+        final int _tmp = value.isDark() ? 1 : 0;
+        stmt.bindLong(1, _tmp);
       }
     };
     this.__deletionAdapterOfLanguage = new EntityDeletionOrUpdateAdapter<Language>(__db) {
@@ -161,6 +177,13 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         return _query;
       }
     };
+    this.__preparedStmtOfDeleteWordById = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM words WHERE id = ?";
+        return _query;
+      }
+    };
     this.__preparedStmtOfDeleteAllWords = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
@@ -171,7 +194,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public Object insertLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object insertLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -184,11 +208,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object insertWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object insertWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -201,11 +225,29 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object insertTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __insertionAdapterOfThemeMode.insert(theme);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object deleteLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -218,11 +260,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object deleteWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -235,11 +277,12 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object updateLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -252,11 +295,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object updateWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -269,11 +312,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllLanguages(final Continuation<? super Unit> arg0) {
+  public Object deleteAllLanguages(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -288,11 +331,32 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllLanguages.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllWords(final Continuation<? super Unit> arg0) {
+  public Object deleteWordById(final int id, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteWordById.acquire();
+        int _argIndex = 1;
+        _stmt.bindLong(_argIndex, id);
+        __db.beginTransaction();
+        try {
+          _stmt.executeUpdateDelete();
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+          __preparedStmtOfDeleteWordById.release(_stmt);
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object deleteAllWords(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -307,7 +371,7 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllWords.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
@@ -537,6 +601,20 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public ThemeMode getTheme() {
+    final String _sql = "SELECT * FROM theme LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   public static List<Class<?>> getRequiredConverters() {

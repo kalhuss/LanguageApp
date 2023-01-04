@@ -20,3 +20,9 @@ data class Word(
     var nativeWord: String,
     var foreignWord: String
 )
+
+//Table for theme
+@Entity(tableName = "theme")
+data class ThemeMode(
+    val isDark: Boolean
+)

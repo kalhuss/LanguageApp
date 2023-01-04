@@ -57,7 +57,20 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.deleteLanguage(language)
     }
 
+    fun deleteWordById(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.deleteWordById(id)
+    }
+
     fun deleteAllWords() = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.deleteAllWords()
+    }
+
+    //Theme operations
+    suspend fun setTheme(theme: ThemeMode) {
+        wordLanguageRepository.setTheme(theme)
+    }
+
+    fun getTheme(): ThemeMode? {
+        return wordLanguageRepository.getTheme()
     }
 }

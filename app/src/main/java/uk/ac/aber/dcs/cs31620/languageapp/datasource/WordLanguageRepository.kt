@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs31620.languageapp.datasource
 import android.app.Application
 import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 
 
@@ -45,7 +46,20 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.deleteWord(word)
     }
 
+    suspend fun deleteWordById(id: Int) {
+        wordLanguageDao.deleteWordById(id)
+    }
+
     suspend fun deleteAllWords() {
         wordLanguageDao.deleteAllWords()
+    }
+
+    //Theme operations
+    suspend fun setTheme(theme: ThemeMode) {
+        wordLanguageDao.insertTheme(theme)
+    }
+
+    fun getTheme(): ThemeMode? {
+        return wordLanguageDao.getTheme()
     }
 }

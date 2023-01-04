@@ -22,7 +22,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
 @Composable
-fun EditWordScreen(navController : NavHostController, wordID: Int){
+fun EditWordScreen(navController : NavHostController, wordID: Int) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
@@ -30,8 +30,8 @@ fun EditWordScreen(navController : NavHostController, wordID: Int){
 
     val word = getWord.observeAsState().value
 
-    val nativeText = remember { mutableStateOf(word?.nativeWord)}
-    val foreignText = remember { mutableStateOf(word?.foreignWord)}
+    val nativeText = remember { mutableStateOf(word?.nativeWord) }
+    val foreignText = remember { mutableStateOf(word?.foreignWord) }
 
     if (nativeText.value == null || foreignText.value == null) {
         nativeText.value = word?.nativeWord
@@ -48,14 +48,21 @@ fun EditWordScreen(navController : NavHostController, wordID: Int){
                 .fillMaxSize()
         ) {
             Column() {
-                Text(language?.nativeLanguage ?: "", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
-                TextField(nativeText.value ?: "",
-                    {newValue -> nativeText.value = newValue},
+                Text(
+                    language?.nativeLanguage ?: "",
+                    modifier = Modifier.padding(top = 24.dp, start = 10.dp)
+                )
+                TextField(
+                    nativeText.value ?: "",
+                    { newValue -> nativeText.value = newValue },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
                 )
-                Text(language?.foreignLanguage ?: "", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+                Text(
+                    language?.foreignLanguage ?: "",
+                    modifier = Modifier.padding(top = 24.dp, start = 10.dp)
+                )
                 TextField(
                     foreignText.value ?: "",
                     { newValue -> foreignText.value = newValue },
@@ -63,27 +70,56 @@ fun EditWordScreen(navController : NavHostController, wordID: Int){
                         .fillMaxWidth()
                         .padding(10.dp)
                 )
-
-                Button(onClick = {
-                    if (foreignText.value != null && nativeText.value != null) {
-                        viewModel.updateWord(Word(wordID, nativeText.value!!, foreignText.value!!))
-                        navController.navigate(Screen.WordList.route){
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                Row(
+                    modifier = Modifier.padding(top = 24.dp).fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)
+                ) {
+                    Button(
+                        onClick = {
+                            if (foreignText.value != null && nativeText.value != null) {
+                                viewModel.updateWord(
+                                    Word(
+                                        wordID,
+                                        nativeText.value!!,
+                                        foreignText.value!!
+                                    )
+                                )
+                                navController.navigate(Screen.WordList.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        },
+                        shape = RoundedCornerShape(4.dp), modifier = Modifier
+                            .padding(top = 24.dp)
+                            .padding(horizontal = 8.dp)
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        Text("Submit Edit")
                     }
-                },
-                    shape = RoundedCornerShape(4.dp), modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.Center)) {
-                    Text("Submit Edit")
+                    Button(
+                        onClick = {
+                            viewModel.deleteWordById(wordID)
+                            navController.navigate(Screen.WordList.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        shape = RoundedCornerShape(4.dp), modifier = Modifier
+                            .padding(top = 24.dp)
+                            .padding(horizontal = 8.dp)
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        Text("Delete")
+                    }
                 }
             }
-
         }
     }
 }

@@ -38,7 +38,7 @@ fun WordListScreen(navController: NavHostController) {
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 allWords.observeAsState().value?.let { list ->
@@ -51,7 +51,6 @@ fun WordListScreen(navController: NavHostController) {
                     }
                 }
             }
-
             FloatingActionButton(
                 onClick = {
                     if (language != null) {
@@ -68,7 +67,8 @@ fun WordListScreen(navController: NavHostController) {
                     .padding(bottom =  16.dp, end = 16.dp)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.BottomEnd),
-                shape = CircleShape
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
