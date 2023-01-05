@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "da45cc4f70dcb2218af1d54b984e8447",
+    "identityHash": "95f14d55300ae9d4f8d2d7c983778465",
     "entities": [
       {
         "tableName": "languages",
@@ -70,7 +70,7 @@
       },
       {
         "tableName": "theme",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL DEFAULT false)",
         "fields": [
           {
             "fieldPath": "id",
@@ -82,7 +82,8 @@
             "fieldPath": "isDark",
             "columnName": "isDark",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "false"
           }
         ],
         "primaryKey": {
@@ -98,7 +99,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'da45cc4f70dcb2218af1d54b984e8447')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95f14d55300ae9d4f8d2d7c983778465')"
     ]
   }
 }

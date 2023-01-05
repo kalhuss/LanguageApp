@@ -41,9 +41,9 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `languages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nativeLanguage` TEXT NOT NULL, `foreignLanguage` TEXT NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `words` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nativeWord` TEXT NOT NULL, `foreignWord` TEXT NOT NULL)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `theme` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `theme` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL DEFAULT false)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'da45cc4f70dcb2218af1d54b984e8447')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95f14d55300ae9d4f8d2d7c983778465')");
       }
 
       @Override
@@ -117,7 +117,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
         }
         final HashMap<String, TableInfo.Column> _columnsTheme = new HashMap<String, TableInfo.Column>(2);
         _columnsTheme.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTheme.put("isDark", new TableInfo.Column("isDark", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTheme.put("isDark", new TableInfo.Column("isDark", "INTEGER", true, 0, "false", TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTheme = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTheme = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTheme = new TableInfo("theme", _columnsTheme, _foreignKeysTheme, _indicesTheme);
@@ -129,7 +129,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "da45cc4f70dcb2218af1d54b984e8447", "30dee11da714ff6710f18f40547a9325");
+    }, "95f14d55300ae9d4f8d2d7c983778465", "e6e566f2d707c7f52691173126fbd1ef");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

@@ -19,6 +19,7 @@ sealed class Screen(
     }
     object TranslationQuiz : Screen("TranslationQuiz")
     object ScrambleQuiz : Screen("ScrambleQuiz")
+    object WordMatchQuiz : Screen("WordMatchQuiz")
 }
 
 val screens = listOf(

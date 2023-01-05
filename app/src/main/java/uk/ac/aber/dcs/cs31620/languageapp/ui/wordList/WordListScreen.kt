@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,6 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
@@ -30,6 +33,10 @@ fun WordListScreen(navController: NavHostController) {
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
+
+
+    val snackbarHostState = remember { SnackbarHostState()}
+    val scope = rememberCoroutineScope()
 
     TopLevelScaffold(
         navController = navController,
@@ -47,34 +54,45 @@ fun WordListScreen(navController: NavHostController) {
                             if (language != null) {
                                 WordCard(navController ,word, language)
                             }
-                            println(word.id)
                         }
                     }
                 }
             }
-            FloatingActionButton(
-                onClick = {
-                    if (language != null) {
-                        navController.navigate(Screen.AddWord.route){
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+            Box(modifier = Modifier.fillMaxSize()) {
+                FloatingActionButton(
+                    onClick = {
+                        if (language != null) {
+                            navController.navigate(Screen.AddWord.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
+                        } else {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    "Input a language",
+                                    "Dismiss",
+                                    false,
+                                    SnackbarDuration.Short
+                                )
+                            }
                         }
-                    }
-                },
-                modifier = Modifier
-                    .padding(bottom =  16.dp, end = 16.dp)
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.BottomEnd),
-                shape = CircleShape,
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(uk.ac.aber.dcs.cs31620.languageapp.R.string.add_word)
-                )
+                    },
+                    modifier = Modifier
+                        .padding(bottom = 16.dp, end = 16.dp)
+                        .align(Alignment.BottomEnd),
+                    shape = CircleShape,
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(uk.ac.aber.dcs.cs31620.languageapp.R.string.add_word)
+                    )
+                }
+
+                SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))
             }
         }
     }

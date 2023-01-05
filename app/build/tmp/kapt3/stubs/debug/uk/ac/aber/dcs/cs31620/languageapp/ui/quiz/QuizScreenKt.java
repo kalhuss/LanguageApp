@@ -6,7 +6,7 @@ import java.lang.System;
 public final class QuizScreenKt {
     
     @androidx.compose.runtime.Composable()
-    @android.annotation.SuppressLint(value = {"UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor"})
+    @android.annotation.SuppressLint(value = {"UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor", "CoroutineCreationDuringComposition"})
     public static final void QuizScreen(@org.jetbrains.annotations.NotNull()
     androidx.navigation.NavHostController navController) {
     }

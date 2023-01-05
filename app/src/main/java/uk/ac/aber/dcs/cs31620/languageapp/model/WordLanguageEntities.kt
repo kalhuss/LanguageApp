@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs31620.languageapp.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -26,5 +27,5 @@ data class Word(
 data class ThemeMode(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val isDark: Boolean
+    @ColumnInfo(defaultValue = "false")val isDark: Boolean
 )

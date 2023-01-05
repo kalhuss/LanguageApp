@@ -21,6 +21,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.QuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.ScrambleQuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.TranslationQuizScreen
+import uk.ac.aber.dcs.cs31620.languageapp.ui.quiz.WordMatchQuizScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingConfirmationScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
@@ -70,5 +71,6 @@ private fun BuildNavigationGraph() {
         composable(Screen.EditWord.route){ EditWordScreen(navController, Screen.EditWord.route.substringAfterLast("/").toInt())}
         composable(Screen.TranslationQuiz.route) { TranslationQuizScreen(navController) }
         composable(Screen.ScrambleQuiz.route) { ScrambleQuizScreen(navController) }
+        composable(Screen.WordMatchQuiz.route) { WordMatchQuizScreen(navController) }
     }
 }

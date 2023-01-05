@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
@@ -28,8 +29,11 @@ fun HomeScreen(navController: NavHostController) {
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     var numWords = allWords.observeAsState().value?.size
-    if(numWords == null){
+    if (numWords == null) {
         numWords = allWords.observeAsState().value?.size
     }
 
@@ -39,7 +43,7 @@ fun HomeScreen(navController: NavHostController) {
 
     val welcomeText = buildAnnotatedString {
         append("Welcome Back To\n Your ")
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)){
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             append("${language?.foreignLanguage} ")
         }
         append("Journey")
@@ -47,62 +51,90 @@ fun HomeScreen(navController: NavHostController) {
 
     TopLevelScaffold(
         navController = navController,
-        titleName  = "Home"
+        titleName = "Home"
     ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(modifier = Modifier.fillMaxHeight()){
+            Box(modifier = Modifier.fillMaxSize()) {
                 if (language == null) {
-                    Text("Native Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
-                    TextField(
-                        value = nativeLanguage,
-                        onValueChange = { nativeLanguage = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                        label = { Text("Native Language") }
-                    )
+                    Column(modifier = Modifier.fillMaxHeight()) {
+                        Text(
+                            "Native Language:",
+                            modifier = Modifier.padding(top = 24.dp, start = 10.dp)
+                        )
+                        TextField(
+                            value = nativeLanguage,
+                            onValueChange = { nativeLanguage = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            label = { Text("Native Language") }
+                        )
 
-                    Text("Foreign Language:", modifier = Modifier.padding(top = 24.dp, start = 10.dp))
-                    TextField(
-                        value = foreignLanguage,
-                        onValueChange = { foreignLanguage = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                        label = { Text("Foreign Language") }
-                    )
-                    Button(onClick = {
-                        viewModel.insertLanguage(Language(0, nativeLanguage, foreignLanguage))
-                    }, shape = RoundedCornerShape(4.dp), modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.Center)) {
-                        Text("Next")
+                        Text(
+                            "Foreign Language:",
+                            modifier = Modifier.padding(top = 24.dp, start = 10.dp)
+                        )
+                        TextField(
+                            value = foreignLanguage,
+                            onValueChange = { foreignLanguage = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            label = { Text("Foreign Language") }
+                        )
+                        Button(
+                            onClick = {
+                                if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty()) {
+                                    viewModel.insertLanguage(
+                                        Language(
+                                            0,
+                                            nativeLanguage,
+                                            foreignLanguage
+                                        )
+                                    )
+                                } else {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            "Input a language",
+                                            "Dismiss",
+                                            false,
+                                            SnackbarDuration.Short
+                                        )
+                                    }
+                                }
+                            }, shape = RoundedCornerShape(4.dp), modifier = Modifier
+                                .padding(top = 24.dp)
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.Center)
+                        ) {
+                            Text("Next")
+                        }
                     }
                 } else {
-                    Text(
-                        welcomeText,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .padding(top = 10.dp)
-                            .wrapContentSize(Alignment.Center)
-                            .align(Alignment.CenterHorizontally)
-                    )
-                    Text(
-                        "Words learnt: $numWords",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .wrapContentSize(Alignment.Center)
-                            .align(Alignment.CenterHorizontally)
-                    )
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            welcomeText,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                            modifier = Modifier
+                                .padding(top = 10.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        Text(
+                            "Words learnt: $numWords",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier
+                                .padding(top = 16.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    }
                 }
+                SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))
             }
         }
     }

@@ -18,7 +18,6 @@ abstract class WordLanguageDatabase : RoomDatabase() {
     abstract fun wordLanguageDao(): WordLanguageDao
 
     companion object {
-        private val defaultTheme = ThemeMode(0, false)
         private var instance: WordLanguageDatabase? = null
         private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
