@@ -17,13 +17,16 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
     val allWords: LiveData<List<Word>>
     val allLanguages: LiveData<List<Language>>
     val allTheme: LiveData<List<ThemeMode>>
+    val allResults: LiveData<List<Results>>
 
     init {
-        val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
+        WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
         wordLanguageRepository = WordLanguageRepository(application)
         allWords = wordLanguageRepository.allWords
         allLanguages = wordLanguageRepository.allLanguages
         allTheme = wordLanguageRepository.allTheme
+        allResults = wordLanguageRepository.allResults
+
     }
 
     //Language operations
@@ -37,14 +40,6 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
 
     fun deleteAllLanguages() = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.deleteAllLanguages()
-    }
-
-    fun updateLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.updateLanguage(language)
-    }
-
-    fun deleteLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.deleteLanguage(language)
     }
 
     // Word operations
@@ -75,5 +70,14 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
 
     fun updateTheme(theme: ThemeMode) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.updateTheme(theme)
+    }
+
+    //Results operations
+    fun insertResults(results: Results) = viewModelScope.launch(Dispatchers.IO){
+        wordLanguageRepository.insertResults(results)
+    }
+
+    fun deleteAllResults() = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.deleteAllResults()
     }
 }

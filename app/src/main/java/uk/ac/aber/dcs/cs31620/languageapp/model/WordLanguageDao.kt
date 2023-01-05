@@ -21,7 +21,7 @@ interface WordLanguageDao {
     suspend fun deleteAllLanguages()
 
     @Query("SELECT * FROM languages")
-    fun getAllLanguages(): LiveData<List<Language>>
+    fun allLanguages(): LiveData<List<Language>>
 
     @Query("SELECT * FROM languages WHERE id = :id")
     fun getLanguageById(id: Int): LiveData<Language>
@@ -41,7 +41,7 @@ interface WordLanguageDao {
 
     // Select operations for the Word entity
     @Query("SELECT * FROM words")
-    fun getAllWords(): LiveData<List<Word>>
+    fun allWords(): LiveData<List<Word>>
 
     @Query("SELECT * FROM words WHERE id = :id")
     fun getWordById(id: Int): LiveData<Word>
@@ -61,5 +61,16 @@ interface WordLanguageDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTheme(theme: ThemeMode)
+
+    // Results operations
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertResults(results: Results)
+
+    @Query("SELECT * FROM results")
+    fun getAllResults(): LiveData<List<Results>>
+
+    @Query("DELETE FROM results")
+    suspend fun deleteAllResults()
+
 
 }

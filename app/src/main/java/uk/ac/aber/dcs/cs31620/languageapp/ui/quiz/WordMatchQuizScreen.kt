@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.QuizResults
@@ -74,7 +75,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
 
     TopLevelScaffold(
         navController = navController,
-        titleName = "Word Match"
+        titleName = "Word Match Quiz"
     ) { innerPadding ->
         Surface(
             modifier = Modifier
@@ -106,7 +107,6 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                 Row(
                                     modifier = Modifier
                                         .padding(8.dp)
-                                        //.fillMaxWidth()
                                         .align(Alignment.CenterHorizontally)
                                         .wrapContentSize(Alignment.Center)
                                 ) {
@@ -155,6 +155,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                 }
                                 if (buttonsDisabled.value == nativeWords.size * 2) {
                                     quizFinished.value = true
+                                    viewModel.insertResults(Results(0, "Word Match Quiz", "${score.value}/${wordsToUse.value?.size}"))
                                 }
                             }
                         }

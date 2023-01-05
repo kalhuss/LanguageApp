@@ -5,12 +5,14 @@ import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
+import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 
 class WordLanguageRepository(application: Application) {
     private val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
-    val allLanguages: LiveData<List<Language>> = wordLanguageDao.getAllLanguages()
-    val allWords: LiveData<List<Word>> = wordLanguageDao.getAllWords()
+    val allLanguages: LiveData<List<Language>> = wordLanguageDao.allLanguages()
+    val allWords: LiveData<List<Word>> = wordLanguageDao.allWords()
     val allTheme: LiveData<List<ThemeMode>> = wordLanguageDao.getAllTheme()
+    val allResults: LiveData<List<Results>> = wordLanguageDao.getAllResults()
 
     //Language operations
     suspend fun insertLanguage(language: Language) {
@@ -62,4 +64,16 @@ class WordLanguageRepository(application: Application) {
     suspend fun updateTheme(theme: ThemeMode) {
         wordLanguageDao.updateTheme(theme)
     }
+
+    //Results operations
+    fun insertResults(results: Results){
+        wordLanguageDao.insertResults(results)
+    }
+
+    suspend fun deleteAllResults(){
+        wordLanguageDao.deleteAllResults()
+    }
+
+
+
 }

@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.QuizResults
@@ -37,8 +38,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
-    val screenOpenedBefore = remember { mutableStateOf(false) }
 
+    val screenOpenedBefore = remember { mutableStateOf(false) }
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
     if (!screenOpenedBefore.value) {
         if (wordsToUse.value == null) {
@@ -142,6 +143,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
                             // Check if we have reached the end of the list
                             if (currentIndex.value == (wordsToUse.value?.size ?: 0) - 1) {
                                 quizFinished.value = true
+                                viewModel.insertResults(Results(0, "Translation Quiz", "${score.value}/${wordsToUse.value?.size}"))
+
                             } else {
                                 // Update the current index and current word
                                 currentIndex.value++

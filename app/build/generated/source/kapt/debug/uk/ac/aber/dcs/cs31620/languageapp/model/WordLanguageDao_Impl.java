@@ -35,6 +35,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
 
   private final EntityInsertionAdapter<ThemeMode> __insertionAdapterOfThemeMode;
 
+  private final EntityInsertionAdapter<Results> __insertionAdapterOfResults;
+
   private final EntityDeletionOrUpdateAdapter<Language> __deletionAdapterOfLanguage;
 
   private final EntityDeletionOrUpdateAdapter<Language> __updateAdapterOfLanguage;
@@ -48,6 +50,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   private final SharedSQLiteStatement __preparedStmtOfDeleteWordById;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAllWords;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAllResults;
 
   public WordLanguageDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -104,6 +108,27 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         stmt.bindLong(1, value.getId());
         final int _tmp = value.isDark() ? 1 : 0;
         stmt.bindLong(2, _tmp);
+      }
+    };
+    this.__insertionAdapterOfResults = new EntityInsertionAdapter<Results>(__db) {
+      @Override
+      public String createQuery() {
+        return "INSERT OR IGNORE INTO `results` (`id`,`quizName`,`score`) VALUES (nullif(?, 0),?,?)";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, Results value) {
+        stmt.bindLong(1, value.getId());
+        if (value.getQuizName() == null) {
+          stmt.bindNull(2);
+        } else {
+          stmt.bindString(2, value.getQuizName());
+        }
+        if (value.getScore() == null) {
+          stmt.bindNull(3);
+        } else {
+          stmt.bindString(3, value.getScore());
+        }
       }
     };
     this.__deletionAdapterOfLanguage = new EntityDeletionOrUpdateAdapter<Language>(__db) {
@@ -196,10 +221,18 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
         return _query;
       }
     };
+    this.__preparedStmtOfDeleteAllResults = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM results";
+        return _query;
+      }
+    };
   }
 
   @Override
-  public Object insertLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object insertLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -212,11 +245,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object insertWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object insertWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -229,11 +262,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object insertTheme(final ThemeMode theme, final Continuation<? super Unit> arg1) {
+  public Object insertTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -246,11 +279,24 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public void insertResults(final Results results) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfResults.insert(results);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
+  public Object deleteLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -263,11 +309,12 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object updateLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -280,11 +327,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object updateWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -297,11 +344,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateTheme(final ThemeMode theme, final Continuation<? super Unit> arg1) {
+  public Object updateTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -314,11 +361,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllLanguages(final Continuation<? super Unit> arg0) {
+  public Object deleteAllLanguages(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -333,11 +380,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllLanguages.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
-  public Object deleteWordById(final int id, final Continuation<? super Unit> arg1) {
+  public Object deleteWordById(final int id, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -354,11 +401,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteWordById.release(_stmt);
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllWords(final Continuation<? super Unit> arg0) {
+  public Object deleteAllWords(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -373,11 +420,30 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllWords.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
-  public LiveData<List<Language>> getAllLanguages() {
+  public Object deleteAllResults(final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAllResults.acquire();
+        __db.beginTransaction();
+        try {
+          _stmt.executeUpdateDelete();
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+          __preparedStmtOfDeleteAllResults.release(_stmt);
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public LiveData<List<Language>> allLanguages() {
     final String _sql = "SELECT * FROM languages";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"languages"}, false, new Callable<List<Language>>() {
@@ -469,7 +535,7 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public LiveData<List<Word>> getAllWords() {
+  public LiveData<List<Word>> allWords() {
     final String _sql = "SELECT * FROM words";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"words"}, false, new Callable<List<Word>>() {
@@ -660,6 +726,51 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
             _tmp = _cursor.getInt(_cursorIndexOfIsDark);
             _tmpIsDark = _tmp != 0;
             _item = new ThemeMode(_tmpId,_tmpIsDark);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
+  public LiveData<List<Results>> getAllResults() {
+    final String _sql = "SELECT * FROM results";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    return __db.getInvalidationTracker().createLiveData(new String[]{"results"}, false, new Callable<List<Results>>() {
+      @Override
+      public List<Results> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfQuizName = CursorUtil.getColumnIndexOrThrow(_cursor, "quizName");
+          final int _cursorIndexOfScore = CursorUtil.getColumnIndexOrThrow(_cursor, "score");
+          final List<Results> _result = new ArrayList<Results>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final Results _item;
+            final int _tmpId;
+            _tmpId = _cursor.getInt(_cursorIndexOfId);
+            final String _tmpQuizName;
+            if (_cursor.isNull(_cursorIndexOfQuizName)) {
+              _tmpQuizName = null;
+            } else {
+              _tmpQuizName = _cursor.getString(_cursorIndexOfQuizName);
+            }
+            final String _tmpScore;
+            if (_cursor.isNull(_cursorIndexOfScore)) {
+              _tmpScore = null;
+            } else {
+              _tmpScore = _cursor.getString(_cursorIndexOfScore);
+            }
+            _item = new Results(_tmpId,_tmpQuizName,_tmpScore);
             _result.add(_item);
           }
           return _result;

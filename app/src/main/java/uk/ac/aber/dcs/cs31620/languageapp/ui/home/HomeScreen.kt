@@ -2,7 +2,9 @@ package uk.ac.aber.dcs.cs31620.languageapp.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,9 +19,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
+import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
+import uk.ac.aber.dcs.cs31620.languageapp.ui.components.ResultsCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
+import uk.ac.aber.dcs.cs31620.languageapp.ui.components.WordCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -28,6 +33,7 @@ fun HomeScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
+    val allResults: LiveData<List<Results>> = viewModel.allResults
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -127,11 +133,28 @@ fun HomeScreen(navController: NavHostController) {
                         Text(
                             "Words learnt: $numWords",
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.headlineSmall,
+                            style = MaterialTheme.typography.headlineMedium,
                             modifier = Modifier
                                 .padding(top = 16.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
+                        if(allResults.value?.size != 0){
+                            Text(
+                                "Recent Quiz Results",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(top = 70.dp).align(Alignment.CenterHorizontally)
+                            )
+                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                                allResults.observeAsState().value?.let { list ->
+                                    if (list.isNotEmpty()) {
+                                        list.forEach { result ->
+                                            ResultsCard(result.quizName, result.score)
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))

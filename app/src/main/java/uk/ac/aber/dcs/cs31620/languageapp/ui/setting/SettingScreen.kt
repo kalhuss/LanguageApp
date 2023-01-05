@@ -43,54 +43,78 @@ fun SettingScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column() {
-                Text(
-                    "This will remove all of the\n vocabulary in the list",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .wrapContentSize(Alignment.Center)
-                        .align(Alignment.CenterHorizontally)
-                )
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.SettingConfirmation.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                Column() {
+                    Text(
+                        "This will remove all of the\n vocabulary in the list",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier
+                            .padding(top = 24.dp)
+                            .wrapContentSize(Alignment.Center)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(Screen.SettingConfirmation.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.Center)
-                ) {
-                    Text("Reset Language")
-                }
+                        },
+                        shape = RoundedCornerShape(4.dp),
+                        modifier = Modifier
+                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Reset Language")
+                    }
 
-                Button(
-                    onClick = {
+                    Button(
+                        onClick = {
+                            viewModel.deleteAllResults()
+                            navController.navigate(Screen.Home.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        shape = RoundedCornerShape(4.dp),
+                        modifier = Modifier
+                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Reset Results")
+                    }
+                    Box(modifier = Modifier.fillMaxSize()) {
+                    Button(
+                        onClick = {
+                            if (getTheme != null) {
+                                setTheme.value = !getTheme.isDark
+                            }
+                            setTheme.value?.let { ThemeMode(1, it) }
+                                ?.let { viewModel.updateTheme(it) }
+                            println("SetTheme: ${setTheme.value}")
+                            println("GetTheme: ${getTheme?.id} + ${getTheme?.isDark}")
+                        },
+                        shape = RoundedCornerShape(4.dp),
+                        modifier = Modifier
+                            .padding(bottom = 32.dp)
+                            .fillMaxWidth()
+                            .wrapContentSize(Alignment.Center)
+                            .align(Alignment.BottomCenter)
+                    ) {
                         if (getTheme != null) {
-                            setTheme.value = !getTheme.isDark
-                        }
-                        setTheme.value?.let { ThemeMode(1, it) }?.let { viewModel.updateTheme(it) }
-                        println("SetTheme: ${setTheme.value}")
-                        println("GetTheme: ${getTheme?.id} + ${getTheme?.isDark}")
-                    },
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier
-                        .padding(top = 32.dp)
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.Center)
-                ){
-                    if (getTheme != null) {
-                        if(getTheme.isDark){
-                            Text("Light Mode")
-                        } else{
-                            Text("Dark Mode")
+                            if (getTheme.isDark) {
+                                Text("Light Mode")
+                            } else {
+                                Text("Dark Mode")
+                            }
                         }
                     }
                 }

@@ -78,10 +78,8 @@ fun QuizScreen(navController : NavHostController) {
                         },
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
-                            .padding(top = 32.dp)
+                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
                             .fillMaxWidth()
-                            .height(40.dp)
-                            .wrapContentSize(Alignment.Center)
                             .align(Alignment.CenterHorizontally)
                     ) {
                         Text("Start Translation Quiz")
@@ -108,10 +106,8 @@ fun QuizScreen(navController : NavHostController) {
                             }
                         },
                         shape = RoundedCornerShape(4.dp), modifier = Modifier
-                            .padding(top = 24.dp)
+                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
                             .fillMaxWidth()
-                            .height(40.dp)
-                            .wrapContentSize(Alignment.Center)
                             .align(Alignment.CenterHorizontally)
                     ) {
                         Text("Start Scramble Quiz")
@@ -138,13 +134,11 @@ fun QuizScreen(navController : NavHostController) {
                             }
                         },
                         shape = RoundedCornerShape(4.dp), modifier = Modifier
-                            .padding(top = 24.dp)
+                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
                             .fillMaxWidth()
-                            .height(40.dp)
-                            .wrapContentSize(Alignment.Center)
                             .align(Alignment.CenterHorizontally)
                     ) {
-                        Text("Start Scramble Quiz")
+                        Text("Start Word Match Quiz")
                     }
                 }
                 SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))

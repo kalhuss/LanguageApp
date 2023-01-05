@@ -41,9 +41,10 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `languages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nativeLanguage` TEXT NOT NULL, `foreignLanguage` TEXT NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `words` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nativeWord` TEXT NOT NULL, `foreignWord` TEXT NOT NULL)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `theme` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL DEFAULT false)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `theme` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isDark` INTEGER NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `results` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `quizName` TEXT NOT NULL, `score` TEXT NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95f14d55300ae9d4f8d2d7c983778465')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '38d16a7bc0b6beefc977642889792c2b')");
       }
 
       @Override
@@ -51,6 +52,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
         _db.execSQL("DROP TABLE IF EXISTS `languages`");
         _db.execSQL("DROP TABLE IF EXISTS `words`");
         _db.execSQL("DROP TABLE IF EXISTS `theme`");
+        _db.execSQL("DROP TABLE IF EXISTS `results`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -117,7 +119,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
         }
         final HashMap<String, TableInfo.Column> _columnsTheme = new HashMap<String, TableInfo.Column>(2);
         _columnsTheme.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTheme.put("isDark", new TableInfo.Column("isDark", "INTEGER", true, 0, "false", TableInfo.CREATED_FROM_ENTITY));
+        _columnsTheme.put("isDark", new TableInfo.Column("isDark", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTheme = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTheme = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTheme = new TableInfo("theme", _columnsTheme, _foreignKeysTheme, _indicesTheme);
@@ -127,9 +129,22 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
                   + " Expected:\n" + _infoTheme + "\n"
                   + " Found:\n" + _existingTheme);
         }
+        final HashMap<String, TableInfo.Column> _columnsResults = new HashMap<String, TableInfo.Column>(3);
+        _columnsResults.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsResults.put("quizName", new TableInfo.Column("quizName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsResults.put("score", new TableInfo.Column("score", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysResults = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesResults = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoResults = new TableInfo("results", _columnsResults, _foreignKeysResults, _indicesResults);
+        final TableInfo _existingResults = TableInfo.read(_db, "results");
+        if (! _infoResults.equals(_existingResults)) {
+          return new RoomOpenHelper.ValidationResult(false, "results(uk.ac.aber.dcs.cs31620.languageapp.model.Results).\n"
+                  + " Expected:\n" + _infoResults + "\n"
+                  + " Found:\n" + _existingResults);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "95f14d55300ae9d4f8d2d7c983778465", "e6e566f2d707c7f52691173126fbd1ef");
+    }, "38d16a7bc0b6beefc977642889792c2b", "7fd3f3707e0a02615928af882b65407f");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -142,7 +157,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "languages","words","theme");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "languages","words","theme","results");
   }
 
   @Override
@@ -154,6 +169,7 @@ public final class WordLanguageDatabase_Impl extends WordLanguageDatabase {
       _db.execSQL("DELETE FROM `languages`");
       _db.execSQL("DELETE FROM `words`");
       _db.execSQL("DELETE FROM `theme`");
+      _db.execSQL("DELETE FROM `results`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();

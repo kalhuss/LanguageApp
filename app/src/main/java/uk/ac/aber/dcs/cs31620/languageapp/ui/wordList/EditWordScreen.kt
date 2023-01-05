@@ -71,12 +71,12 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                         .padding(10.dp)
                 )
                 Row(
-                    modifier = Modifier.padding(top = 24.dp).fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                         .wrapContentSize(Alignment.Center)
                 ) {
                     Button(
                         onClick = {
-                            if (foreignText.value != null && nativeText.value != null) {
+                            if (foreignText.value?.isNotBlank() == true && nativeText.value?.isNotBlank() == true) {
                                 viewModel.updateWord(
                                     Word(
                                         wordID,

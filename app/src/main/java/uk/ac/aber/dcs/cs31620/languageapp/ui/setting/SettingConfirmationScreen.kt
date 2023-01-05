@@ -70,6 +70,7 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                         onClick = {
                             viewModel.deleteAllLanguages()
                             viewModel.deleteAllWords()
+                            viewModel.deleteAllResults()
                             navController.navigate(Screen.Home.route){
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true

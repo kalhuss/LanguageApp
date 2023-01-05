@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.QuizResults
@@ -137,6 +138,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
 
                             if (currentIndex.value == (wordsToUse.value?.size ?: 0) - 1) {
                                 quizFinished.value = true
+                                viewModel.insertResults(Results(0, "Scramble Quiz", "${score.value}/${wordsToUse.value?.size}"))
                             } else {
                                 currentIndex.value++
                                 currentWord = wordsToUse.value?.get(currentIndex.value)

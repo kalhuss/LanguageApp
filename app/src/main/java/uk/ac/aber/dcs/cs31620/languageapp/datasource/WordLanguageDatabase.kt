@@ -8,12 +8,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import uk.ac.aber.dcs.cs31620.languageapp.model.Language
-import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
-import uk.ac.aber.dcs.cs31620.languageapp.model.Word
-import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageDao
+import uk.ac.aber.dcs.cs31620.languageapp.model.*
 
-@Database(entities = [Language::class, Word::class, ThemeMode::class], exportSchema = true, version = 1)
+@Database(entities = [Language::class, Word::class, ThemeMode::class, Results::class], exportSchema = true, version = 1)
 abstract class WordLanguageDatabase : RoomDatabase() {
     abstract fun wordLanguageDao(): WordLanguageDao
 
