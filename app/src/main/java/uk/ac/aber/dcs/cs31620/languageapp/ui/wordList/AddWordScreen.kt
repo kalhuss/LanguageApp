@@ -8,15 +8,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
-import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
@@ -46,7 +43,7 @@ fun AddWordScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(){
+            Column {
                 Text(nativeLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
                 TextField(
                     value = nativeWord,

@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.sqlite.db.SimpleSQLiteQuery
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
@@ -34,7 +33,7 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column() {
+            Column {
                 Text(
                     "Are you sure\n you want to reset your language?",
                     textAlign = TextAlign.Center,

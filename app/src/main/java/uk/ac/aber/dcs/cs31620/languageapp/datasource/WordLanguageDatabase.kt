@@ -32,7 +32,7 @@ abstract class WordLanguageDatabase : RoomDatabase() {
             //context.deleteDatabase("word_language_database")
             if (instance == null) {
                 instance =
-                    Room.databaseBuilder<WordLanguageDatabase>(
+                    Room.databaseBuilder(
                         context.applicationContext,
                         WordLanguageDatabase::class.java,
                         "word_language_database"

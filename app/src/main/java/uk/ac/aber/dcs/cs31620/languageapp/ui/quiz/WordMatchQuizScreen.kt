@@ -5,19 +5,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
@@ -34,19 +34,16 @@ fun WordMatchQuizScreen(navController : NavHostController) {
 
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
-    val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
-    val language = allLanguages.observeAsState().value?.firstOrNull()
-    val screenOpenedBefore = remember { mutableStateOf(false) }
 
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
-    if (!screenOpenedBefore.value) {
-        if (wordsToUse.value == null) {
-            val wordsToUseState =
-                allWords.observeAsState().value?.toMutableList()
-                    ?.shuffled()
-                    ?.take(min(6, allWords.value?.size ?: 0))
-            wordsToUse.value = wordsToUseState
-        }
+    val wordObserve = allWords.observeAsState()
+    LaunchedEffect(Unit) {
+        wordsToUse.value = null
+    }
+
+    if (wordsToUse.value == null) {
+        wordsToUse.value = wordObserve.value?.shuffled()
+            ?.take(min(6, allWords.value?.size ?: 0))
     }
 
     val nativeWordID = remember { mutableStateOf(0) }
@@ -57,14 +54,8 @@ fun WordMatchQuizScreen(navController : NavHostController) {
     nativeWords = nativeWords?.toMutableList()?.shuffled()
     foreignWords = foreignWords?.toMutableList()?.shuffled()
 
-    println("nativeWords $nativeWords")
-    println("foreignWords $foreignWords")
-
     val nativeButtonState = remember { mutableListOf<MutableState<Boolean>>() }
     val foreignButtonState = remember { mutableListOf<MutableState<Boolean>>() }
-
-    val nativeButtonPressedFirst = remember { mutableStateOf(false) }
-    val foreignButtonPressedFirst = remember { mutableStateOf(false) }
 
     val buttonsDisabled = remember { mutableStateOf(0) }
     val nativeButtonsEnabled = remember { mutableStateOf(true) }
@@ -72,6 +63,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
 
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
+    val resultsInserted = remember { mutableStateOf(false) }
 
     TopLevelScaffold(
         navController = navController,
@@ -83,18 +75,43 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                 .fillMaxSize()
         ) {
             if (quizFinished.value) {
-                Column() {
+                Column {
+                    if(!resultsInserted.value) {
+                        viewModel.insertResults(
+                            Results(
+                                0,
+                                "Word Match Quiz",
+                                "${score.value}/${wordsToUse.value?.size}"
+                            )
+                        )
+                        resultsInserted.value = true
+                        println("results inserted: ${resultsInserted.value}")
+                    }
+
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
                     }
                 }
             } else {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())){
                     if (nativeWords != null) {
+                        Text(
+                            text = "Match the words",
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onBackground
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        )
                         for (i in nativeWords.indices) {
                             nativeButtonState.add(mutableStateOf(false))
                             foreignButtonState.add(mutableStateOf(false))
@@ -115,15 +132,18 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                             nativeWordID.value = nativeWords[i].first
                                             nativeButtonState[i].value = true
                                             buttonsDisabled.value++
-                                            nativeButtonPressedFirst.value = true
 
                                             nativeButtonsEnabled.value = false
                                             foreignButtonsEnabled.value = true
 
-                                            if (nativeWordID.value == foreignWordID.value) {
-                                                score.value++
-                                                println("Score: ${score.value}")
-                                                nativeButtonState[i].value = true
+                                            if(buttonsDisabled.value % 2 == 0 && buttonsDisabled.value > 0){
+                                                if (nativeWordID.value == foreignWordID.value) {
+                                                    score.value++
+                                                    nativeButtonState[i].value = true
+                                                } else{
+                                                    nativeWordID.value = 0
+                                                    foreignWordID.value = 0
+                                                }
                                             }
                                         },
                                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
@@ -136,28 +156,33 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                             foreignWordID.value = foreignWords?.get(i)?.first ?: 0
                                             foreignButtonState[i].value = true
                                             buttonsDisabled.value++
-                                            foreignButtonPressedFirst.value = true
 
                                             foreignButtonsEnabled.value = false
                                             nativeButtonsEnabled.value = true
 
-                                            if (nativeWordID.value == foreignWordID.value) {
-                                                score.value++
-                                                println("Score: ${score.value}")
-                                                foreignButtonState[i].value = true
+                                            if(buttonsDisabled.value % 2 == 0 && buttonsDisabled.value > 0) {
+                                                if (nativeWordID.value == foreignWordID.value) {
+                                                    score.value++
+                                                    foreignButtonState[i].value = true
+                                                } else{
+                                                    nativeWordID.value = 0
+                                                    foreignWordID.value = 0
+                                                }
                                             }
+
+
                                         },
                                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
                                         enabled = !foreignButtonState[i].value && foreignButtonsEnabled.value
                                     ) {
                                         foreignWords?.get(i)?.let { Text(it.second) }
                                     }
-                                }
-                                if (buttonsDisabled.value == nativeWords.size * 2) {
-                                    quizFinished.value = true
-                                    viewModel.insertResults(Results(0, "Word Match Quiz", "${score.value}/${wordsToUse.value?.size}"))
+
                                 }
                             }
+                        }
+                        if (buttonsDisabled.value == nativeWords.size * 2) {
+                            quizFinished.value = true
                         }
                     }
                 }

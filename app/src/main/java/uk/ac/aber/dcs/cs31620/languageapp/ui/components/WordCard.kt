@@ -39,7 +39,7 @@ fun WordCard(navController: NavHostController, word: Word, language: Language) {
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier.padding(8.dp).fillMaxWidth().shadow(4.dp, RoundedCornerShape(4.dp))
         ) {
-            Row() {
+            Row {
                 Column(modifier = Modifier.padding(16.dp).weight(1f)) {
                     Text(text = language.nativeLanguage, style = subheadStyle)
                     Text(text = word.nativeWord, style = textStyle)

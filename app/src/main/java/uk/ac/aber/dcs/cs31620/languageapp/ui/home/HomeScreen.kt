@@ -24,7 +24,6 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.ResultsCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
-import uk.ac.aber.dcs.cs31620.languageapp.ui.components.WordCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -34,7 +33,7 @@ fun HomeScreen(navController: NavHostController) {
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allResults: LiveData<List<Results>> = viewModel.allResults
-
+    println(allResults.observeAsState().value)
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -143,7 +142,9 @@ fun HomeScreen(navController: NavHostController) {
                                 "Recent Quiz Results",
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(top = 70.dp).align(Alignment.CenterHorizontally)
+                                modifier = Modifier
+                                    .padding(top = 70.dp)
+                                    .align(Alignment.CenterHorizontally)
                             )
                             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                                 allResults.observeAsState().value?.let { list ->

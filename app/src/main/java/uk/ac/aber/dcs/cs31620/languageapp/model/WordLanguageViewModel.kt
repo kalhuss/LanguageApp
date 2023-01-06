@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageDatabase
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageRepository
@@ -22,6 +20,8 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
     init {
         WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
         wordLanguageRepository = WordLanguageRepository(application)
+
+        // Get all
         allWords = wordLanguageRepository.allWords
         allLanguages = wordLanguageRepository.allLanguages
         allTheme = wordLanguageRepository.allTheme
@@ -29,11 +29,7 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
 
     }
 
-    //Language operations
-    fun insertWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
-        wordLanguageRepository.insertWord(word)
-    }
-
+    // Language operations
     fun insertLanguage(language: Language) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.insertLanguage(language)
     }
@@ -43,6 +39,10 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
     }
 
     // Word operations
+    fun insertWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
+        wordLanguageRepository.insertWord(word)
+    }
+
     fun updateWord(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.updateWord(word)
     }
@@ -59,11 +59,7 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.deleteAllWords()
     }
 
-    fun countWords(): LiveData<Int> {
-        return wordLanguageRepository.countWords()
-    }
-
-    //Theme operations
+    // Theme operations
     fun insertTheme(theme: ThemeMode) = viewModelScope.launch(Dispatchers.IO) {
         wordLanguageRepository.insertTheme(theme)
     }
@@ -72,7 +68,7 @@ class WordLanguageViewModel(application: Application) : AndroidViewModel(applica
         wordLanguageRepository.updateTheme(theme)
     }
 
-    //Results operations
+    // Results operations
     fun insertResults(results: Results) = viewModelScope.launch(Dispatchers.IO){
         wordLanguageRepository.insertResults(results)
     }

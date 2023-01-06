@@ -20,8 +20,8 @@ fun ResultsCard(quizName: String, quizScore: String){
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth().shadow(4.dp, RoundedCornerShape(4.dp))
     ){
-        Row(){
-            Text(text = quizName, style = textStyle, modifier = Modifier.padding(16.dp).weight(2f), )
+        Row {
+            Text(text = quizName, style = textStyle, modifier = Modifier.padding(16.dp).weight(2f))
             Spacer(Modifier.weight(1f))
             Text(text = quizScore, style = textStyle, modifier = Modifier.padding(16.dp).weight(1f).align(Alignment.CenterVertically))
         }

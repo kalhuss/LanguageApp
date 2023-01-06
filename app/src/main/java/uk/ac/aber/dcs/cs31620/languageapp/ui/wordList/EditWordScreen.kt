@@ -47,7 +47,7 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column() {
+            Column {
                 Text(
                     language?.nativeLanguage ?: "",
                     modifier = Modifier.padding(top = 24.dp, start = 10.dp)

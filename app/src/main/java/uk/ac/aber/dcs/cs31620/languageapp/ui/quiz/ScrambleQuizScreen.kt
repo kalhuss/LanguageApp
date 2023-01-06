@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -31,66 +33,67 @@ import kotlin.math.min
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
 @Composable
 fun ScrambleQuizScreen(navController : NavHostController) {
-    val viewModel: WordLanguageViewModel = viewModel()
-    val allWords: LiveData<List<Word>> = viewModel.allWords
 
-    val screenOpenedBefore = remember { mutableStateOf(false) }
+    val viewModel: WordLanguageViewModel = viewModel()
+    val allWords : LiveData<List<Word>> = viewModel.allWords
 
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
-    if (!screenOpenedBefore.value) {
-        if (wordsToUse.value == null) {
-            val wordsToUseState = allWords.observeAsState().value?.shuffled()
-                ?.take(min(10, allWords.value?.size ?: 0))
-            wordsToUse.value = wordsToUseState
-        }
+    val wordObserve = allWords.observeAsState()
+    LaunchedEffect(Unit) {
+        wordsToUse.value = null
     }
 
-    val currentIndex = remember { mutableStateOf(0) }
+    if (wordsToUse.value == null) {
+        wordsToUse.value = wordObserve.value?.shuffled()
+            ?.take(min(10, allWords.value?.size ?: 0))
+    }
+
+    val currentIndex = remember { mutableStateOf(0)}
     var currentWord = wordsToUse.value?.get(currentIndex.value)
     val userAnswer = remember { mutableStateOf("") }
-
-    val scrambledLetters = remember { mutableStateOf("") }
-    currentWord?.let { word ->
-        var shuffled = word.foreignWord.toList().shuffled().joinToString("")
-        while (shuffled == word.foreignWord) {
-            shuffled = word.foreignWord.toList().shuffled().joinToString("")
-        }
-        scrambledLetters.value = shuffled
-    }
 
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
 
+    var shuffledWord = currentWord?.foreignWord
+    var counter = 0
+    while (shuffledWord == currentWord?.foreignWord && counter < 100) {
+        shuffledWord = currentWord?.foreignWord?.toList()?.shuffled()?.joinToString("")
+        counter++
+    }
+
     TopLevelScaffold(
         navController = navController,
         titleName = "Scramble Quiz"
-    ) { innerPadding ->
+    ){  innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column() {
-                if (quizFinished.value) {
-                    QuizResults(score.value, wordsToUse.value?.size ?: 0){
+            Column {
+                if(quizFinished. value) {
+                    QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
                     }
                 } else {
-
                     Text(
                         text = "What is this unscrambled?",
                         textAlign = TextAlign.Center,
                         style = TextStyle(
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onBackground),
+                            color = MaterialTheme.colorScheme.onBackground
+                        ),
                         modifier = Modifier
                             .fillMaxWidth()
                     )
-                    
+
                     Card(
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
@@ -98,18 +101,15 @@ fun ScrambleQuizScreen(navController : NavHostController) {
                             .fillMaxWidth()
                             .height(75.dp)
                             .shadow(4.dp, RoundedCornerShape(4.dp))
-                    ) {
-                        Text(
-                            text = scrambledLetters.value,
-                            textAlign = TextAlign.Center,
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                color = MaterialTheme.colorScheme.onBackground
-                            ),
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        )
+                    ){
+                            Text(
+                                text = shuffledWord.toString(),
+                                textAlign = TextAlign.Center,
+                                style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                            )
                     }
 
                     Text(
@@ -132,21 +132,19 @@ fun ScrambleQuizScreen(navController : NavHostController) {
 
                     Button(
                         onClick = {
-                            if (userAnswer.value.equals(currentWord?.foreignWord, ignoreCase = true)) {
+                            if (userAnswer.value.equals(currentWord?.foreignWord, ignoreCase = true)){
                                 score.value++
                             }
 
-                            if (currentIndex.value == (wordsToUse.value?.size ?: 0) - 1) {
+                            if(currentIndex.value == (wordsToUse.value?.size ?: 0) - 1){
                                 quizFinished.value = true
                                 viewModel.insertResults(Results(0, "Scramble Quiz", "${score.value}/${wordsToUse.value?.size}"))
                             } else {
                                 currentIndex.value++
                                 currentWord = wordsToUse.value?.get(currentIndex.value)
-
                             }
-                            scrambledLetters.value = ""
-                            userAnswer.value = ""
 
+                            userAnswer.value = ""
                         },
                         modifier = Modifier
                             .padding(16.dp)
@@ -158,4 +156,5 @@ fun ScrambleQuizScreen(navController : NavHostController) {
             }
         }
     }
+
 }

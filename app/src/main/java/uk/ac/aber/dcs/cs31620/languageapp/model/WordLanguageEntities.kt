@@ -1,9 +1,7 @@
 package uk.ac.aber.dcs.cs31620.languageapp.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 //Table for languages
 @Entity(tableName = "languages")

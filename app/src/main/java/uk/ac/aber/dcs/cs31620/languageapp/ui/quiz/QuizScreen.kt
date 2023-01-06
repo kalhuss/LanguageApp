@@ -55,7 +55,7 @@ fun QuizScreen(navController : NavHostController) {
                 .fillMaxSize()
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                Column() {
+                Column {
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {

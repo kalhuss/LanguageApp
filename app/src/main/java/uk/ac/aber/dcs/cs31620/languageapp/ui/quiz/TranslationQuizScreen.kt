@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -15,10 +13,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
@@ -30,7 +29,9 @@ import kotlin.math.min
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor",
+    "CoroutineCreationDuringComposition"
+)
 @Composable
 fun TranslationQuizScreen(navController : NavHostController) {
 
@@ -39,21 +40,20 @@ fun TranslationQuizScreen(navController : NavHostController) {
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
-    val screenOpenedBefore = remember { mutableStateOf(false) }
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
-    if (!screenOpenedBefore.value) {
-        if (wordsToUse.value == null) {
-            val wordsToUseState =
-                allWords.observeAsState().value?.shuffled()
-                    ?.take(min(10, allWords.value?.size ?: 0))
-            wordsToUse.value = wordsToUseState
-        }
+    val wordObserve = allWords.observeAsState()
+    LaunchedEffect(Unit) {
+        wordsToUse.value = null
+    }
+
+    if (wordsToUse.value == null) {
+        wordsToUse.value = wordObserve.value?.shuffled()
+            ?.take(min(10, allWords.value?.size ?: 0))
     }
 
     val currentIndex = remember { mutableStateOf(0) }
     var currentWord = wordsToUse.value?.get(currentIndex.value)
     val userAnswer = remember { mutableStateOf("") }
-
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
 
@@ -74,8 +74,10 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
                     }
                 } else {
@@ -104,7 +106,10 @@ fun TranslationQuizScreen(navController : NavHostController) {
                             Text(
                                 text = it,
                                 textAlign = TextAlign.Center,
-                                style = TextStyle(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                ),
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth()
@@ -117,7 +122,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
                         textAlign = TextAlign.Center,
                         style = TextStyle(
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onBackground),
+                            color = MaterialTheme.colorScheme.onBackground
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -135,7 +141,11 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     Button(
                         onClick = {
                             // Check if the answer is correct and update the score
-                            if (userAnswer.value.equals((if (translationLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord), ignoreCase = true)) {
+                            if (userAnswer.value.equals(
+                                    (if (translationLanguage == "native") currentWord?.nativeWord else currentWord?.foreignWord),
+                                    ignoreCase = true
+                                )
+                            ) {
                                 score.value++
                             }
 
@@ -143,7 +153,13 @@ fun TranslationQuizScreen(navController : NavHostController) {
                             // Check if we have reached the end of the list
                             if (currentIndex.value == (wordsToUse.value?.size ?: 0) - 1) {
                                 quizFinished.value = true
-                                viewModel.insertResults(Results(0, "Translation Quiz", "${score.value}/${wordsToUse.value?.size}"))
+                                viewModel.insertResults(
+                                    Results(
+                                        0,
+                                        "Translation Quiz",
+                                        "${score.value}/${wordsToUse.value?.size}"
+                                    )
+                                )
 
                             } else {
                                 // Update the current index and current word

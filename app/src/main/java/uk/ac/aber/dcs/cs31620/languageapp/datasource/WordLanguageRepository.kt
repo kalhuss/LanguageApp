@@ -9,39 +9,33 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 
 class WordLanguageRepository(application: Application) {
     private val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
+
+    // Get all
     val allLanguages: LiveData<List<Language>> = wordLanguageDao.allLanguages()
     val allWords: LiveData<List<Word>> = wordLanguageDao.allWords()
     val allTheme: LiveData<List<ThemeMode>> = wordLanguageDao.getAllTheme()
     val allResults: LiveData<List<Results>> = wordLanguageDao.getAllResults()
 
-    //Language operations
+    // Language operations
     suspend fun insertLanguage(language: Language) {
         wordLanguageDao.insertLanguage(language)
-    }
-
-    suspend fun updateLanguage(language: Language) {
-        wordLanguageDao.updateLanguage(language)
-    }
-
-    suspend fun deleteLanguage(language: Language) {
-        wordLanguageDao.deleteLanguage(language)
     }
 
     suspend fun deleteAllLanguages() {
         wordLanguageDao.deleteAllLanguages()
     }
 
-    //Word operations
+    // Word operations
     suspend fun insertWord(word: Word) {
         wordLanguageDao.insertWord(word)
     }
 
-    fun getWordById(id: Int): LiveData<Word> {
-        return wordLanguageDao.getWordById(id)
-    }
-
     suspend fun updateWord(word: Word) {
         wordLanguageDao.updateWord(word)
+    }
+
+    fun getWordById(id: Int): LiveData<Word> {
+        return wordLanguageDao.getWordById(id)
     }
 
     suspend fun deleteWordById(id: Int) {
@@ -52,11 +46,7 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.deleteAllWords()
     }
 
-    fun countWords(): LiveData<Int> {
-        return wordLanguageDao.countWords()
-    }
-
-    //Theme operations
+    // Theme operations
     suspend fun insertTheme(theme: ThemeMode) {
         wordLanguageDao.insertTheme(theme)
     }
@@ -65,7 +55,7 @@ class WordLanguageRepository(application: Application) {
         wordLanguageDao.updateTheme(theme)
     }
 
-    //Results operations
+    // Results operations
     fun insertResults(results: Results){
         wordLanguageDao.insertResults(results)
     }

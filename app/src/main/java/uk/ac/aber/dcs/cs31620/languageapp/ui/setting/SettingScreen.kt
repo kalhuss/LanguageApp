@@ -43,7 +43,7 @@ fun SettingScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-                Column() {
+                Column {
                     Text(
                         "This will remove all of the\n vocabulary in the list",
                         textAlign = TextAlign.Center,
