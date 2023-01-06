@@ -33,7 +33,7 @@ fun HomeScreen(navController: NavHostController) {
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allResults: LiveData<List<Results>> = viewModel.allResults
-    println(allResults.observeAsState().value)
+    println("Results: ${allResults.observeAsState().value}")
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -93,7 +93,7 @@ fun HomeScreen(navController: NavHostController) {
                         )
                         Button(
                             onClick = {
-                                if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty()) {
+                                if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty() && foreignLanguage.length <= 20 && nativeLanguage.length <= 20) {
                                     viewModel.insertLanguage(
                                         Language(
                                             0,
@@ -104,7 +104,7 @@ fun HomeScreen(navController: NavHostController) {
                                 } else {
                                     scope.launch {
                                         snackbarHostState.showSnackbar(
-                                            "Input a language",
+                                            "Input a language with a maximum length of 20 characters",
                                             "Dismiss",
                                             false,
                                             SnackbarDuration.Short
@@ -137,7 +137,7 @@ fun HomeScreen(navController: NavHostController) {
                                 .padding(top = 16.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
-                        if(allResults.value?.size != 0){
+                        if(allResults.observeAsState().value?.size != 0){
                             Text(
                                 "Recent Quiz Results",
                                 textAlign = TextAlign.Center,
@@ -149,7 +149,7 @@ fun HomeScreen(navController: NavHostController) {
                             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                                 allResults.observeAsState().value?.let { list ->
                                     if (list.isNotEmpty()) {
-                                        list.forEach { result ->
+                                        list.reversed().forEach() { result ->
                                             ResultsCard(result.quizName, result.score)
                                         }
                                     }

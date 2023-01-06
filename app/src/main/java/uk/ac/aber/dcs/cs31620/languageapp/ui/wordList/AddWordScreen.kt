@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
@@ -29,6 +30,9 @@ fun AddWordScreen(navController: NavHostController) {
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState(initial = listOf()).value.firstOrNull() ?: return
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     val nativeLanguage by remember { mutableStateOf(language.nativeLanguage)}
     val foreignLanguage by remember { mutableStateOf(language.foreignLanguage)}
     var nativeWord by remember { mutableStateOf("") }
@@ -43,45 +47,59 @@ fun AddWordScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column {
-                Text(nativeLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
-                TextField(
-                    value = nativeWord,
-                    onValueChange = { nativeWord = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                )
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column {
+                    Text(nativeLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+                    TextField(
+                        value = nativeWord,
+                        onValueChange = { nativeWord = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                    )
 
-                Text(foreignLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
-                TextField(
-                    value = foreignWord,
-                    onValueChange = { foreignWord = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                )
-                //Make the button add the word pair to the database
-                Button(onClick = {
-                    if (nativeWord.isNotBlank() && foreignWord.isNotBlank()) {
-                        viewModel.insertWord(Word(0, nativeWord, foreignWord))
-                        nativeWord = ""
-                        foreignWord = ""
-                        navController.navigate(Screen.WordList.route){
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                    Text(foreignLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+                    TextField(
+                        value = foreignWord,
+                        onValueChange = { foreignWord = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                    )
+                    //Make the button add the word pair to the database
+                    Button(
+                        onClick = {
+                            if (nativeWord.isNotBlank() && foreignWord.isNotBlank() && nativeWord.length <= 20 && foreignWord.length <= 20) {
+                                viewModel.insertWord(Word(0, nativeWord, foreignWord))
+                                nativeWord = ""
+                                foreignWord = ""
+                                navController.navigate(Screen.WordList.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            } else {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        "Input a word with a maximum length of 20 characters",
+                                        "Dismiss",
+                                        false,
+                                        SnackbarDuration.Short
+                                    )
+                                }
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        },
+                        shape = RoundedCornerShape(4.dp), modifier = Modifier
+                            .padding(top = 24.dp)
+                            .fillMaxWidth()
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        Text("Add")
                     }
-                },
-                    shape = RoundedCornerShape(4.dp), modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.Center)) {
-                    Text("Add")
                 }
+                SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))
             }
         }
     }
