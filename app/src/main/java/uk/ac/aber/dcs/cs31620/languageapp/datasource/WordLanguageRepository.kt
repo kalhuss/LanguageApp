@@ -63,7 +63,4 @@ class WordLanguageRepository(application: Application) {
     suspend fun deleteAllResults(){
         wordLanguageDao.deleteAllResults()
     }
-
-
-
 }

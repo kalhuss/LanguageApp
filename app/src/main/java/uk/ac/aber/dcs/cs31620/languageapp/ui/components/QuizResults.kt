@@ -13,8 +13,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun QuizResults(score: Int, total: Int, onFinish: () -> Unit) {
+
     Column(modifier = Modifier.padding(16.dp).fillMaxHeight().wrapContentSize(Alignment.Center)) {
         Column(modifier = Modifier.padding(bottom = 40.dp)) {
+
             Text(
                 text = "Your scored $score/$total",
                 style = MaterialTheme.typography.headlineMedium,
@@ -22,6 +24,7 @@ fun QuizResults(score: Int, total: Int, onFinish: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
             )
+
             val percentage = (score * 100f / total).toInt()
             Text(
                 text = "$percentage%",
@@ -31,6 +34,7 @@ fun QuizResults(score: Int, total: Int, onFinish: () -> Unit) {
                     .fillMaxWidth()
             )
         }
+
         Button(
             onClick = onFinish,
             shape = RoundedCornerShape(4.dp),

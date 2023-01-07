@@ -56,6 +56,7 @@ fun QuizScreen(navController : NavHostController) {
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column {
+
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {
@@ -84,7 +85,9 @@ fun QuizScreen(navController : NavHostController) {
                     ) {
                         Text("Start Translation Quiz")
                     }
+
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {
@@ -112,7 +115,9 @@ fun QuizScreen(navController : NavHostController) {
                     ) {
                         Text("Start Scramble Quiz")
                     }
+
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {

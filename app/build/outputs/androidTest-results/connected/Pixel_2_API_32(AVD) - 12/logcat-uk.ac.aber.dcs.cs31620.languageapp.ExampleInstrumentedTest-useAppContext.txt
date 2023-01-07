@@ -1,0 +1,2 @@
+01-06 18:54:02.979 27249 27273 I TestRunner: started: useAppContext(uk.ac.aber.dcs.cs31620.languageapp.ExampleInstrumentedTest)
+01-06 18:54:02.986 27249 27273 I TestRunner: finished: useAppContext(uk.ac.aber.dcs.cs31620.languageapp.ExampleInstrumentedTest)

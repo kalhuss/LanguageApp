@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ResultsCard(quizName: String, quizScore: String){
+
     val textStyle = TextStyle(fontSize = 18.sp)
 
     Card(

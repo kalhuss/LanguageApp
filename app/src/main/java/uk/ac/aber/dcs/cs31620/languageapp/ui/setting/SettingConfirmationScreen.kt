@@ -34,6 +34,7 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
             Column {
+
                 Text(
                     "Are you sure\n you want to reset your language?",
                     textAlign = TextAlign.Center,
@@ -43,10 +44,12 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                         .wrapContentSize(Alignment.Center)
                         .align(Alignment.CenterHorizontally)
                 )
+
                 Row(modifier = Modifier
                     .padding(top = 24.dp)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)) {
+
                     Button(
                         onClick = {
                             navController.navigate(Screen.Setting.route){
@@ -64,6 +67,7 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                     ) {
                         Text("Cancel")
                     }
+
                     //Onclick deletes all values from word database and language database
                     Button(
                         onClick = {

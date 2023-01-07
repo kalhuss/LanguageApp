@@ -24,6 +24,7 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
 @Composable
 fun EditWordScreen(navController : NavHostController, wordID: Int) {
+
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
@@ -53,10 +54,12 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column {
+
                     Text(
                         language?.nativeLanguage ?: "",
                         modifier = Modifier.padding(top = 24.dp, start = 10.dp)
                     )
+
                     TextField(
                         nativeText.value ?: "",
                         { newValue -> nativeText.value = newValue },
@@ -64,10 +67,12 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                             .fillMaxWidth()
                             .padding(10.dp)
                     )
+
                     Text(
                         language?.foreignLanguage ?: "",
                         modifier = Modifier.padding(top = 24.dp, start = 10.dp)
                     )
+
                     TextField(
                         foreignText.value ?: "",
                         { newValue -> foreignText.value = newValue },
@@ -75,10 +80,12 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                             .fillMaxWidth()
                             .padding(10.dp)
                     )
+
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .wrapContentSize(Alignment.Center)
                     ) {
+
                         Button(
                             onClick = {
                                 if (foreignText.value?.isNotBlank() == true && nativeText.value?.isNotBlank() == true && foreignText.value!!.length <= 20 && nativeText.value!!.length <= 20) {
@@ -99,7 +106,7 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                                 } else{
                                     scope.launch {
                                         snackbarHostState.showSnackbar(
-                                            "Input a word with a maximum length of 20 characters",
+                                            "Input a word less than 20 characters",
                                             "Dismiss",
                                             false,
                                             SnackbarDuration.Short
@@ -114,6 +121,7 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                         ) {
                             Text("Submit Edit")
                         }
+
                         Button(
                             onClick = {
                                 viewModel.deleteWordById(wordID)

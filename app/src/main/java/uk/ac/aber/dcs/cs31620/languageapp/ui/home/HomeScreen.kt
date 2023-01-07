@@ -29,11 +29,12 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController) {
+
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allResults: LiveData<List<Results>> = viewModel.allResults
-    println("Results: ${allResults.observeAsState().value}")
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -66,23 +67,26 @@ fun HomeScreen(navController: NavHostController) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (language == null) {
                     Column(modifier = Modifier.fillMaxHeight()) {
+
                         Text(
                             "Native Language:",
                             modifier = Modifier.padding(top = 24.dp, start = 10.dp)
                         )
+
                         TextField(
                             value = nativeLanguage,
                             onValueChange = { nativeLanguage = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp),
-                            label = { Text("Native Language") }
+                            label = { Text("Native Language") },
                         )
 
                         Text(
                             "Foreign Language:",
                             modifier = Modifier.padding(top = 24.dp, start = 10.dp)
                         )
+
                         TextField(
                             value = foreignLanguage,
                             onValueChange = { foreignLanguage = it },
@@ -91,6 +95,7 @@ fun HomeScreen(navController: NavHostController) {
                                 .padding(10.dp),
                             label = { Text("Foreign Language") }
                         )
+
                         Button(
                             onClick = {
                                 if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty() && foreignLanguage.length <= 20 && nativeLanguage.length <= 20) {
@@ -104,10 +109,9 @@ fun HomeScreen(navController: NavHostController) {
                                 } else {
                                     scope.launch {
                                         snackbarHostState.showSnackbar(
-                                            "Input a language with a maximum length of 20 characters",
-                                            "Dismiss",
-                                            false,
-                                            SnackbarDuration.Short
+                                            "Input a language less than 20 characters",
+                                            withDismissAction = false,
+                                            duration = SnackbarDuration.Short
                                         )
                                     }
                                 }
@@ -121,6 +125,7 @@ fun HomeScreen(navController: NavHostController) {
                     }
                 } else {
                     Column(modifier = Modifier.fillMaxSize()) {
+
                         Text(
                             welcomeText,
                             textAlign = TextAlign.Center,
@@ -129,6 +134,7 @@ fun HomeScreen(navController: NavHostController) {
                                 .padding(top = 10.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
+
                         Text(
                             "Words learnt: $numWords",
                             textAlign = TextAlign.Center,
@@ -137,6 +143,7 @@ fun HomeScreen(navController: NavHostController) {
                                 .padding(top = 16.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
+
                         if(allResults.observeAsState().value?.size != 0){
                             Text(
                                 "Recent Quiz Results",
@@ -146,6 +153,7 @@ fun HomeScreen(navController: NavHostController) {
                                     .padding(top = 70.dp)
                                     .align(Alignment.CenterHorizontally)
                             )
+
                             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                                 allResults.observeAsState().value?.let { list ->
                                     if (list.isNotEmpty()) {

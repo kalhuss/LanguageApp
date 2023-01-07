@@ -29,13 +29,14 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
 @Composable
 fun WordListScreen(navController: NavHostController) {
+
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
 
-    val snackbarHostState = remember { SnackbarHostState()}
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     TopLevelScaffold(
@@ -48,17 +49,19 @@ fun WordListScreen(navController: NavHostController) {
                 .fillMaxSize(),
         ) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
                 allWords.observeAsState().value?.let { list ->
-                    if(list.isNotEmpty()){
-                        list.forEach{ word ->
+                    if (list.isNotEmpty()) {
+                        list.forEach { word ->
                             if (language != null) {
-                                WordCard(navController ,word, language)
+                                WordCard(navController, word, language)
                             }
                         }
                     }
                 }
             }
             Box(modifier = Modifier.fillMaxSize()) {
+
                 FloatingActionButton(
                     onClick = {
                         if (language != null) {
@@ -73,9 +76,8 @@ fun WordListScreen(navController: NavHostController) {
                             scope.launch {
                                 snackbarHostState.showSnackbar(
                                     "Input a language",
-                                    "Dismiss",
-                                    false,
-                                    SnackbarDuration.Short
+                                    withDismissAction = false,
+                                    duration = SnackbarDuration.Short
                                 )
                             }
                         }
@@ -91,8 +93,11 @@ fun WordListScreen(navController: NavHostController) {
                         contentDescription = stringResource(uk.ac.aber.dcs.cs31620.languageapp.R.string.add_word)
                     )
                 }
-
-                SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomEnd))
+                SnackbarHost(
+                    snackbarHostState, modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(y = (-64).dp)
+                )
             }
         }
     }

@@ -26,7 +26,6 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 fun AddWordScreen(navController: NavHostController) {
 
     val viewModel: WordLanguageViewModel = viewModel()
-
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState(initial = listOf()).value.firstOrNull() ?: return
 
@@ -59,6 +58,7 @@ fun AddWordScreen(navController: NavHostController) {
                     )
 
                     Text(foreignLanguage, modifier = Modifier.padding(top = 24.dp, start = 10.dp))
+
                     TextField(
                         value = foreignWord,
                         onValueChange = { foreignWord = it },
@@ -66,6 +66,7 @@ fun AddWordScreen(navController: NavHostController) {
                             .fillMaxWidth()
                             .padding(10.dp),
                     )
+
                     //Make the button add the word pair to the database
                     Button(
                         onClick = {
@@ -83,7 +84,7 @@ fun AddWordScreen(navController: NavHostController) {
                             } else {
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
-                                        "Input a word with a maximum length of 20 characters",
+                                        "Input a word less than 20 characters",
                                         "Dismiss",
                                         false,
                                         SnackbarDuration.Short

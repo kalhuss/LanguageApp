@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="uk.ac.aber.dcs.cs31620.languageapp.ExampleInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="1.048" timestamp="2023-01-06T18:54:08" hostname="localhost">
+  <properties>
+    <property name="device" value="Pixel_2_API_32(AVD) - 12" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="useAppContext" classname="uk.ac.aber.dcs.cs31620.languageapp.ExampleInstrumentedTest" time="0.009" />
+</testsuite>

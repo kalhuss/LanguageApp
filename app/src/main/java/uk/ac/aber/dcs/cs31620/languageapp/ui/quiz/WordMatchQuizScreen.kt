@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -56,7 +55,6 @@ fun WordMatchQuizScreen(navController : NavHostController) {
 
     val nativeButtonState = remember { mutableListOf<MutableState<Boolean>>() }
     val foreignButtonState = remember { mutableListOf<MutableState<Boolean>>() }
-
     val buttonsDisabled = remember { mutableStateOf(0) }
     val nativeButtonsEnabled = remember { mutableStateOf(true) }
     val foreignButtonsEnabled = remember { mutableStateOf(true) }
@@ -76,6 +74,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
         ) {
             if (quizFinished.value) {
                 Column {
+
                     if(!resultsInserted.value) {
                         viewModel.insertResults(
                             Results(
@@ -85,7 +84,6 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                             )
                         )
                         resultsInserted.value = true
-                        println("results inserted: ${resultsInserted.value}")
                     }
 
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
@@ -100,6 +98,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                 }
             } else {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())){
+
                     if (nativeWords != null) {
                         Text(
                             text = "Match the words",
@@ -151,6 +150,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                     ) {
                                         Text(nativeWords[i].second)
                                     }
+
                                     Button(
                                         onClick = {
                                             foreignWordID.value = foreignWords?.get(i)?.first ?: 0
@@ -169,15 +169,12 @@ fun WordMatchQuizScreen(navController : NavHostController) {
                                                     foreignWordID.value = 0
                                                 }
                                             }
-
-
                                         },
                                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
                                         enabled = !foreignButtonState[i].value && foreignButtonsEnabled.value
                                     ) {
                                         foreignWords?.get(i)?.let { Text(it.second) }
                                     }
-
                                 }
                             }
                         }

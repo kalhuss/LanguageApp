@@ -17,7 +17,6 @@ import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
@@ -54,6 +53,7 @@ fun TranslationQuizScreen(navController : NavHostController) {
     val currentIndex = remember { mutableStateOf(0) }
     var currentWord = wordsToUse.value?.get(currentIndex.value)
     val userAnswer = remember { mutableStateOf("") }
+
     val score = remember { mutableStateOf(0) }
     val quizFinished = remember { mutableStateOf(false) }
 

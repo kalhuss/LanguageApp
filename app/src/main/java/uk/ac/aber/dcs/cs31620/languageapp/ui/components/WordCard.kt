@@ -26,8 +26,10 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
 @Composable
 fun WordCard(navController: NavHostController, word: Word, language: Language) {
+
     val textStyle = TextStyle(fontSize = 18.sp)
     val subheadStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold)
+
     val isIconButtonClicked = remember { mutableStateOf(false) }
     val wordID = remember { mutableStateOf(0)}
 
@@ -41,10 +43,12 @@ fun WordCard(navController: NavHostController, word: Word, language: Language) {
         ) {
             Row {
                 Column(modifier = Modifier.padding(16.dp).weight(1f)) {
+
                     Text(text = language.nativeLanguage, style = subheadStyle)
                     Text(text = word.nativeWord, style = textStyle)
                 }
                 Column(modifier = Modifier.padding(16.dp).weight(1f)) {
+
                     Text(text = language.foreignLanguage, style = subheadStyle)
                     Text(text = word.foreignWord, style = textStyle)
 

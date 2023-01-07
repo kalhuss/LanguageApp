@@ -17,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -39,6 +38,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
 
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
     val wordObserve = allWords.observeAsState()
+
     LaunchedEffect(Unit) {
         wordsToUse.value = null
     }
@@ -72,6 +72,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
                 .fillMaxSize()
         ) {
             Column {
+
                 if(quizFinished. value) {
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
@@ -83,6 +84,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
                         }
                     }
                 } else {
+
                     Text(
                         text = "What is this unscrambled?",
                         textAlign = TextAlign.Center,
@@ -156,5 +158,4 @@ fun ScrambleQuizScreen(navController : NavHostController) {
             }
         }
     }
-
 }

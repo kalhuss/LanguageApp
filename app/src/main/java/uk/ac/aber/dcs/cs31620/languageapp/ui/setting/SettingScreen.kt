@@ -32,7 +32,7 @@ fun SettingScreen(navController: NavHostController) {
     val viewModel: WordLanguageViewModel = viewModel()
     val allTheme: LiveData<List<ThemeMode>> = viewModel.allTheme
     val getTheme = allTheme.observeAsState().value?.firstOrNull()
-    val setTheme = remember { mutableStateOf(getTheme?.isDark)}
+    val setTheme = remember { mutableStateOf(getTheme?.isDark) }
 
     TopLevelScaffold(
         navController = navController,
@@ -43,55 +43,58 @@ fun SettingScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-                Column {
-                    Text(
-                        "This will remove all of the\n vocabulary in the list",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .padding(top = 24.dp)
-                            .wrapContentSize(Alignment.Center)
-                            .align(Alignment.CenterHorizontally)
-                    )
-                    Button(
-                        onClick = {
-                            navController.navigate(Screen.SettingConfirmation.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        shape = RoundedCornerShape(4.dp),
-                        modifier = Modifier
-                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Text("Reset Language")
-                    }
+            Column {
 
-                    Button(
-                        onClick = {
-                            viewModel.deleteAllResults()
-                            navController.navigate(Screen.Home.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                Text(
+                    "This will remove all of the\n vocabulary in the list",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .padding(top = 24.dp)
+                        .wrapContentSize(Alignment.Center)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+                Button(
+                    onClick = {
+                        navController.navigate(Screen.SettingConfirmation.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
                             }
-                        },
-                        shape = RoundedCornerShape(4.dp),
-                        modifier = Modifier
-                            .padding(top = 32.dp, start = 90.dp, end = 90.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Text("Reset Results")
-                    }
-                    Box(modifier = Modifier.fillMaxSize()) {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier
+                        .padding(top = 32.dp, start = 90.dp, end = 90.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Text("Reset Language")
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.deleteAllResults()
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier
+                        .padding(top = 32.dp, start = 90.dp, end = 90.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Text("Reset Results")
+                }
+
+                Box(modifier = Modifier.fillMaxSize()) {
                     Button(
                         onClick = {
                             if (getTheme != null) {
@@ -99,8 +102,6 @@ fun SettingScreen(navController: NavHostController) {
                             }
                             setTheme.value?.let { ThemeMode(1, it) }
                                 ?.let { viewModel.updateTheme(it) }
-                            println("SetTheme: ${setTheme.value}")
-                            println("GetTheme: ${getTheme?.id} + ${getTheme?.isDark}")
                         },
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
