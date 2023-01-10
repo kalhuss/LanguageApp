@@ -17,6 +17,11 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.screens
 import uk.ac.aber.dcs.cs31620.languageapp.R
 
+/**
+ * The navigation bar displayed on the app.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @Composable
 fun MainPageNavigationBar(navController : NavController) {
     val icons = mapOf(
@@ -37,6 +42,7 @@ fun MainPageNavigationBar(navController : NavController) {
         )
     )
 
+    // Navigates the graph when an icon is pressed
     NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination

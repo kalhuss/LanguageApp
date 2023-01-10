@@ -24,6 +24,15 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * A card that displays a word and its translation.
+ *
+ * This function creates a card with the word and its translation, and provides a button to edit the word.
+ *
+ * @param navController The navigation controller for the app.
+ * @param word The word to display.
+ * @param language The language of the word.
+ */
 @Composable
 fun WordCard(navController: NavHostController, word: Word, language: Language) {
 

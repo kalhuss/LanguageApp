@@ -7,6 +7,11 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.Results
 
+/**
+ * Repository for the language app. This repository is responsible for managing data operations
+ * such as inserting, updating, and deleting data in the database. It also provides access to
+ * LiveData objects for the UI to observe.
+ */
 class WordLanguageRepository(application: Application) {
     private val wordLanguageDao = WordLanguageDatabase.getDatabase(application)!!.wordLanguageDao()
 

@@ -14,28 +14,41 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
-import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.model.Language
 import uk.ac.aber.dcs.cs31620.languageapp.model.Word
 import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
+import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that allows the user to add a new word.
+ *
+ * This function displays a form for the user to enter the details of a new word.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddWordScreen(navController: NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState(initial = listOf()).value.firstOrNull() ?: return
 
+    // Snack bar
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    val nativeLanguage by remember { mutableStateOf(language.nativeLanguage)}
-    val foreignLanguage by remember { mutableStateOf(language.foreignLanguage)}
+    // Storing the words
+    val nativeLanguage by remember { mutableStateOf(language.nativeLanguage) }
+    val foreignLanguage by remember { mutableStateOf(language.foreignLanguage) }
     var nativeWord by remember { mutableStateOf("") }
     var foreignWord by remember { mutableStateOf("") }
+
+    // Input validation
+    val specialCharactersPattern = "[^\\p{L}\\p{N} ]".toRegex()
 
     TopLevelScaffold(
         navController = navController,
@@ -67,10 +80,12 @@ fun AddWordScreen(navController: NavHostController) {
                             .padding(10.dp),
                     )
 
-                    //Make the button add the word pair to the database
                     Button(
                         onClick = {
-                            if (nativeWord.isNotBlank() && foreignWord.isNotBlank() && nativeWord.length <= 20 && foreignWord.length <= 20) {
+                            // Adds the word pair to the database
+                            if (foreignWord.isNotEmpty() && nativeWord.isNotEmpty() &&
+                                foreignWord.length <= 20 && nativeWord.length <= 20 &&
+                                !foreignWord.contains(specialCharactersPattern) && !nativeWord.contains(specialCharactersPattern)) {
                                 viewModel.insertWord(Word(0, nativeWord, foreignWord))
                                 nativeWord = ""
                                 foreignWord = ""
@@ -85,9 +100,8 @@ fun AddWordScreen(navController: NavHostController) {
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
                                         "Input a word less than 20 characters",
-                                        "Dismiss",
-                                        false,
-                                        SnackbarDuration.Short
+                                         withDismissAction = false,
+                                        duration = SnackbarDuration.Short
                                     )
                                 }
                             }

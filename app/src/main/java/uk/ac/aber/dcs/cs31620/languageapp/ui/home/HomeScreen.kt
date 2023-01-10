@@ -25,28 +25,43 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.ResultsCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 
+/**
+ * The home screen of the app.
+ *
+ * This displays a welcome message with some statistics like word count and recent results, or it displays an input for language.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allResults: LiveData<List<Results>> = viewModel.allResults
 
+    // Snack bar
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    // Check if there are words in the words database, if not search again
     var numWords = allWords.observeAsState().value?.size
     if (numWords == null) {
         numWords = allWords.observeAsState().value?.size
     }
 
+    // Storing the live data
     var nativeLanguage by remember { mutableStateOf("") }
     var foreignLanguage by remember { mutableStateOf("") }
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
+    // Input validation
+    val specialCharactersPattern = "[^\\p{L}\\p{N} ]".toRegex()
+
+    // Creating the welcome text
     val welcomeText = buildAnnotatedString {
         append("Welcome Back To\n Your ")
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
@@ -65,6 +80,8 @@ fun HomeScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
+
+                // Check if there is a language
                 if (language == null) {
                     Column(modifier = Modifier.fillMaxHeight()) {
 
@@ -98,7 +115,9 @@ fun HomeScreen(navController: NavHostController) {
 
                         Button(
                             onClick = {
-                                if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty() && foreignLanguage.length <= 20 && nativeLanguage.length <= 20) {
+                                if (foreignLanguage.isNotEmpty() && nativeLanguage.isNotEmpty() &&
+                                    foreignLanguage.length <= 20 && nativeLanguage.length <= 20 &&
+                                    !foreignLanguage.contains(specialCharactersPattern) && !nativeLanguage.contains(specialCharactersPattern)) {
                                     viewModel.insertLanguage(
                                         Language(
                                             0,
@@ -124,6 +143,7 @@ fun HomeScreen(navController: NavHostController) {
                         }
                     }
                 } else {
+                    // Display language input
                     Column(modifier = Modifier.fillMaxSize()) {
 
                         Text(

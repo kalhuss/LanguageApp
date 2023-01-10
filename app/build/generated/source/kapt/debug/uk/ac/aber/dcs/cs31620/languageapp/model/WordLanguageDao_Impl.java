@@ -193,7 +193,8 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public Object insertLanguage(final Language language, final Continuation<? super Unit> arg1) {
+  public Object insertLanguage(final Language language,
+      final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -206,11 +207,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object insertWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object insertWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -223,11 +224,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object insertTheme(final ThemeMode theme, final Continuation<? super Unit> arg1) {
+  public Object insertTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -240,7 +241,7 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
@@ -256,7 +257,7 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
   }
 
   @Override
-  public Object updateWord(final Word word, final Continuation<? super Unit> arg1) {
+  public Object updateWord(final Word word, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -269,11 +270,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object updateTheme(final ThemeMode theme, final Continuation<? super Unit> arg1) {
+  public Object updateTheme(final ThemeMode theme, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -286,11 +287,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllLanguages(final Continuation<? super Unit> arg0) {
+  public Object deleteAllLanguages(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -305,11 +306,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllLanguages.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
-  public Object deleteWordById(final int id, final Continuation<? super Unit> arg1) {
+  public Object deleteWordById(final int id, final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -326,11 +327,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteWordById.release(_stmt);
         }
       }
-    }, arg1);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllWords(final Continuation<? super Unit> arg0) {
+  public Object deleteAllWords(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -345,11 +346,11 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllWords.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override
-  public Object deleteAllResults(final Continuation<? super Unit> arg0) {
+  public Object deleteAllResults(final Continuation<? super Unit> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
@@ -364,7 +365,7 @@ public final class WordLanguageDao_Impl implements WordLanguageDao {
           __preparedStmtOfDeleteAllResults.release(_stmt);
         }
       }
-    }, arg0);
+    }, continuation);
   }
 
   @Override

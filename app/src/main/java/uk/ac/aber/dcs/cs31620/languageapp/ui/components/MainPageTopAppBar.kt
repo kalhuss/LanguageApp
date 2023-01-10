@@ -22,10 +22,17 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.setting.SettingScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.theme.LanguageAppTheme
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
+/**
+ * The top app bar displayed on the app.
+ *
+ * @param navController The navigation controller for the app.
+ * @param titleName The title to display in the top app bar.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPageTopAppBar(navController: NavController, titleName: String){
 
+    // Title for the screen and a settings icon
     TopAppBar(
         title = { Text(text = (titleName)) },
         actions = {

@@ -27,6 +27,13 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import kotlin.math.min
 import kotlin.random.Random
 
+/**
+ * The translation quiz screen.
+ *
+ * This function displays a translation quiz and allows the user to solve it.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor",
     "CoroutineCreationDuringComposition"
@@ -34,29 +41,40 @@ import kotlin.random.Random
 @Composable
 fun TranslationQuizScreen(navController : NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
+    // Stores the words
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
     val wordObserve = allWords.observeAsState()
+
+    // Resetting the words when the screen is opened
     LaunchedEffect(Unit) {
         wordsToUse.value = null
     }
 
+    // Gets new live data and shuffles it, takes 10 or all the words, whichever is less
     if (wordsToUse.value == null) {
         wordsToUse.value = wordObserve.value?.shuffled()
             ?.take(min(10, allWords.value?.size ?: 0))
     }
 
+    // Stores the question number
     val currentIndex = remember { mutableStateOf(0) }
+    // Stores the current question
     var currentWord = wordsToUse.value?.get(currentIndex.value)
+    // Stores the users answer
     val userAnswer = remember { mutableStateOf("") }
 
+    //Stores the score
     val score = remember { mutableStateOf(0) }
+    // Stores the state of the quiz
     val quizFinished = remember { mutableStateOf(false) }
 
+    // Randomises the language of the question
     val displayLanguage = if (Random.nextBoolean()) "native" else "foreign"
     val translationLanguage = if (displayLanguage == "native") "foreign" else "native"
 
@@ -70,6 +88,8 @@ fun TranslationQuizScreen(navController : NavHostController) {
                 .fillMaxSize()
         ) {
             Column {
+
+                // Result screen
                 if (quizFinished.value) {
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
@@ -82,6 +102,7 @@ fun TranslationQuizScreen(navController : NavHostController) {
                     }
                 } else {
 
+                    // Displays quiz
                     Text(
                         text = "What is this translated into ${if (displayLanguage == "native") language?.foreignLanguage else language?.nativeLanguage}?",
                         textAlign = TextAlign.Center,

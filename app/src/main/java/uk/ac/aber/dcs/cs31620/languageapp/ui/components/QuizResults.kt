@@ -11,6 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * Displays the results of a quiz.
+ *
+ * @param score The number of correct answers.
+ * @param total The total number of questions.
+ * @param onFinish A callback to be invoked when the user finishes viewing the results.
+ */
 @Composable
 fun QuizResults(score: Int, total: Int, onFinish: () -> Unit) {
 

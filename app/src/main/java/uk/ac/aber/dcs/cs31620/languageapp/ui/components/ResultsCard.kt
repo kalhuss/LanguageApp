@@ -12,6 +12,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A card that displays the results of a quiz.
+ *
+ * @param quizName The name of the quiz.
+ * @param quizScore The score of the quiz.
+ */
 @Composable
 fun ResultsCard(quizName: String, quizScore: String){
 

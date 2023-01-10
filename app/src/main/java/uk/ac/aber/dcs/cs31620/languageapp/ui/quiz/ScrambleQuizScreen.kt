@@ -28,33 +28,50 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import kotlin.math.min
 
+/**
+ * The scramble quiz screen.
+ *
+ * This function displays a scramble quiz and allows the user to solve it.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
 @Composable
 fun ScrambleQuizScreen(navController : NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords : LiveData<List<Word>> = viewModel.allWords
 
+    // Storing the data
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
     val wordObserve = allWords.observeAsState()
 
+    // Resetting the words when screen is opened
     LaunchedEffect(Unit) {
         wordsToUse.value = null
     }
 
+    // Gets new live data and shuffles it, takes 10 or all the words, whichever is less
     if (wordsToUse.value == null) {
         wordsToUse.value = wordObserve.value?.shuffled()
             ?.take(min(10, allWords.value?.size ?: 0))
     }
 
+    // Stores which question the quiz is on
     val currentIndex = remember { mutableStateOf(0)}
+    // Stores the current word
     var currentWord = wordsToUse.value?.get(currentIndex.value)
+    // Stores the users answer
     val userAnswer = remember { mutableStateOf("") }
 
+    // Stores the score
     val score = remember { mutableStateOf(0) }
+    // Stores the state of the quiz
     val quizFinished = remember { mutableStateOf(false) }
 
+    // Shuffles the letters of the current word
     var shuffledWord = currentWord?.foreignWord
     var counter = 0
     while (shuffledWord == currentWord?.foreignWord && counter < 100) {
@@ -74,6 +91,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
             Column {
 
                 if(quizFinished. value) {
+                    // Result screen
                     QuizResults(score.value, wordsToUse.value?.size ?: 0) {
                         navController.navigate(Screen.Quiz.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -85,6 +103,7 @@ fun ScrambleQuizScreen(navController : NavHostController) {
                     }
                 } else {
 
+                    // Displays quiz
                     Text(
                         text = "What is this unscrambled?",
                         textAlign = TextAlign.Center,

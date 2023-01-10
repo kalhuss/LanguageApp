@@ -18,10 +18,18 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that confirms the deletion of all words, languages and results.
+ *
+ * This function displays a confirmation prompt and allows the user to confirm or cancel the deletion of all words, language and results.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SettingConfirmationScreen(navController: NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
 
     TopLevelScaffold(
@@ -71,6 +79,7 @@ fun SettingConfirmationScreen(navController: NavHostController) {
                     //Onclick deletes all values from word database and language database
                     Button(
                         onClick = {
+                            // Deletes data from the databases
                             viewModel.deleteAllLanguages()
                             viewModel.deleteAllWords()
                             viewModel.deleteAllResults()

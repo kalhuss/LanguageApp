@@ -25,10 +25,18 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that displays the app settings.
+ *
+ * This function allows the user to change the app theme, change the app language or delete all results.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SettingScreen(navController: NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allTheme: LiveData<List<ThemeMode>> = viewModel.allTheme
     val getTheme = allTheme.observeAsState().value?.firstOrNull()
@@ -76,6 +84,7 @@ fun SettingScreen(navController: NavHostController) {
 
                 Button(
                     onClick = {
+                        // Deletes all the results
                         viewModel.deleteAllResults()
                         navController.navigate(Screen.Home.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -95,6 +104,7 @@ fun SettingScreen(navController: NavHostController) {
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
+                    // Changes theme
                     Button(
                         onClick = {
                             if (getTheme != null) {

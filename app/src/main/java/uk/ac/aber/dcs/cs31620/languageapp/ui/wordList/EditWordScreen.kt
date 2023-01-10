@@ -20,28 +20,44 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that allows the user to edit a word.
+ *
+ * This function displays the details of a word and allows the user to edit a word pair or delete the word pair.
+ *
+ * @param navController The navigation controller for the app.
+ * @param wordID The ID of the word to edit.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor")
 @Composable
 fun EditWordScreen(navController : NavHostController, wordID: Int) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
     val getWord: LiveData<Word> = viewModel.getWordById(wordID)
 
+    // Storing the words as state variables
     val word = getWord.observeAsState().value
 
+    // Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    // Storing the live data
     val nativeText = remember { mutableStateOf(word?.nativeWord) }
     val foreignText = remember { mutableStateOf(word?.foreignWord) }
 
+    // Error handling if null
     if (nativeText.value == null || foreignText.value == null) {
         nativeText.value = word?.nativeWord
         foreignText.value = word?.foreignWord
     }
+
+    // Input validation
+    val specialCharactersPattern = "[^\\p{L}\\p{N} ]".toRegex()
 
     TopLevelScaffold(
         navController = navController,
@@ -88,7 +104,10 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
 
                         Button(
                             onClick = {
-                                if (foreignText.value?.isNotBlank() == true && nativeText.value?.isNotBlank() == true && foreignText.value!!.length <= 20 && nativeText.value!!.length <= 20) {
+                                // Update the word pair
+                                if (foreignText.value?.isNotBlank() == true && nativeText.value?.isNotBlank() == true &&
+                                    foreignText.value!!.length <= 20 && nativeText.value!!.length <= 20 &&
+                                    !foreignText.value!!.contains(specialCharactersPattern) && !nativeText.value!!.contains(specialCharactersPattern)) {
                                     viewModel.updateWord(
                                         Word(
                                             wordID,
@@ -107,9 +126,8 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
                                     scope.launch {
                                         snackbarHostState.showSnackbar(
                                             "Input a word less than 20 characters",
-                                            "Dismiss",
-                                            false,
-                                            SnackbarDuration.Short
+                                            withDismissAction = false,
+                                            duration = SnackbarDuration.Short
                                         )
                                     }
                                 }
@@ -124,6 +142,7 @@ fun EditWordScreen(navController : NavHostController, wordID: Int) {
 
                         Button(
                             onClick = {
+                                // Delete the word pair
                                 viewModel.deleteWordById(wordID)
                                 navController.navigate(Screen.WordList.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {

@@ -25,42 +25,60 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 import kotlin.math.min
 
+/**
+ * The word match quiz screen.
+ *
+ * This function displays a word match quiz and allows the user to solve it.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor",
     "MutableCollectionMutableState", "UnrememberedMutableState"
 )
 @Composable
 fun WordMatchQuizScreen(navController : NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
 
+    // Stores the live data
     val wordsToUse = remember { mutableStateOf<List<Word>?>(null) }
     val wordObserve = allWords.observeAsState()
+
+    // Resetting the words when the screen is opened
     LaunchedEffect(Unit) {
         wordsToUse.value = null
     }
 
+    // Gets new live data and shuffles it, takes 10 or all the words, whichever is less
     if (wordsToUse.value == null) {
         wordsToUse.value = wordObserve.value?.shuffled()
             ?.take(min(6, allWords.value?.size ?: 0))
     }
 
+    // Stores the ID's of the words
     val nativeWordID = remember { mutableStateOf(0) }
     val foreignWordID = remember { mutableStateOf(1) }
 
+    // Separates the word list into native and foreign and shuffles both
     var nativeWords = wordsToUse.value?.map { Pair(it.id, it.nativeWord) }
     var foreignWords = wordsToUse.value?.map { Pair(it.id, it.foreignWord) }
     nativeWords = nativeWords?.toMutableList()?.shuffled()
     foreignWords = foreignWords?.toMutableList()?.shuffled()
 
+    // Stores the states of the buttons
     val nativeButtonState = remember { mutableListOf<MutableState<Boolean>>() }
     val foreignButtonState = remember { mutableListOf<MutableState<Boolean>>() }
     val buttonsDisabled = remember { mutableStateOf(0) }
     val nativeButtonsEnabled = remember { mutableStateOf(true) }
     val foreignButtonsEnabled = remember { mutableStateOf(true) }
 
+    // Stores the score
     val score = remember { mutableStateOf(0) }
+    // Stores the state of the quiz
     val quizFinished = remember { mutableStateOf(false) }
+    // Stores the state of the results being inserted into the database
     val resultsInserted = remember { mutableStateOf(false) }
 
     TopLevelScaffold(
@@ -75,6 +93,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
             if (quizFinished.value) {
                 Column {
 
+                    // Results screen
                     if(!resultsInserted.value) {
                         viewModel.insertResults(
                             Results(
@@ -99,6 +118,7 @@ fun WordMatchQuizScreen(navController : NavHostController) {
             } else {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())){
 
+                    // Displays buttons for the question
                     if (nativeWords != null) {
                         Text(
                             text = "Match the words",

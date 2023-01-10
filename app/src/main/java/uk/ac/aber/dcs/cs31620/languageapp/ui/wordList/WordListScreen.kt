@@ -27,15 +27,23 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.WordCard
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that displays a list of words.
+ *
+ * This function displays a list of words and their translations, and allows the user to edit the word.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @Composable
 fun WordListScreen(navController: NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allWords: LiveData<List<Word>> = viewModel.allWords
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
 
-
+    // Snack bar
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -49,7 +57,7 @@ fun WordListScreen(navController: NavHostController) {
                 .fillMaxSize(),
         ) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-
+                // Display words in a card
                 allWords.observeAsState().value?.let { list ->
                     if (list.isNotEmpty()) {
                         list.forEach { word ->
@@ -62,6 +70,7 @@ fun WordListScreen(navController: NavHostController) {
             }
             Box(modifier = Modifier.fillMaxSize()) {
 
+                // Button to add new words
                 FloatingActionButton(
                     onClick = {
                         if (language != null) {

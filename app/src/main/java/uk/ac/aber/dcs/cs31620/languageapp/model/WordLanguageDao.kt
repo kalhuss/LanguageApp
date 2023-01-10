@@ -3,6 +3,10 @@ package uk.ac.aber.dcs.cs31620.languageapp.model
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+/**
+ * Data access object (DAO) for the language app database. Provides methods for inserting, updating,
+ * deleting, and querying data in the database.
+ */
 @Dao
 interface WordLanguageDao {
 

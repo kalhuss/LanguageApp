@@ -2,6 +2,10 @@ package uk.ac.aber.dcs.cs31620.languageapp.datasource;
 
 import java.lang.System;
 
+/**
+ * Room database for the language app. This database is used to store and retrieve language, word,
+ * theme mode, and results data.
+ */
 @androidx.room.Database(entities = {uk.ac.aber.dcs.cs31620.languageapp.model.Language.class, uk.ac.aber.dcs.cs31620.languageapp.model.Word.class, uk.ac.aber.dcs.cs31620.languageapp.model.ThemeMode.class, uk.ac.aber.dcs.cs31620.languageapp.model.Results.class}, exportSchema = true, version = 1)
 @kotlin.Metadata(mv = {1, 6, 0}, k = 1, d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \u00052\u00020\u0001:\u0001\u0005B\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&\u00a8\u0006\u0006"}, d2 = {"Luk/ac/aber/dcs/cs31620/languageapp/datasource/WordLanguageDatabase;", "Landroidx/room/RoomDatabase;", "()V", "wordLanguageDao", "Luk/ac/aber/dcs/cs31620/languageapp/model/WordLanguageDao;", "Companion", "app_debug"})
 public abstract class WordLanguageDatabase extends androidx.room.RoomDatabase {
@@ -14,6 +18,9 @@ public abstract class WordLanguageDatabase extends androidx.room.RoomDatabase {
         super();
     }
     
+    /**
+     * Provides access to the data access object (DAO) for this database.
+     */
     @org.jetbrains.annotations.NotNull()
     public abstract uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageDao wordLanguageDao();
     
@@ -24,10 +31,22 @@ public abstract class WordLanguageDatabase extends androidx.room.RoomDatabase {
             super();
         }
         
+        /**
+         * Deletes the entire database.
+         *
+         * @param context the context in which the database is being deleted
+         */
         public final void deleteDatabase(@org.jetbrains.annotations.NotNull()
         android.content.Context context) {
         }
         
+        /**
+         * Returns the singleton instance of the database. If the instance does not exist yet,
+         * it will be created using the provided context.
+         *
+         * @param context the context in which the database is being accessed
+         * @return the singleton instance of the database
+         */
         @org.jetbrains.annotations.Nullable()
         @kotlin.jvm.Synchronized()
         public final synchronized uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageDatabase getDatabase(@org.jetbrains.annotations.NotNull()
@@ -35,10 +54,24 @@ public abstract class WordLanguageDatabase extends androidx.room.RoomDatabase {
             return null;
         }
         
+        /**
+         * Returns a RoomDatabase.Callback object that is called when the database is created for
+         * the first time. This callback is responsible for populating the database with a default
+         * theme mode.
+         *
+         * @param context the context in which the database is being created
+         * @return a RoomDatabase.Callback object
+         */
         private final androidx.room.RoomDatabase.Callback roomDatabaseCallback(android.content.Context context) {
             return null;
         }
         
+        /**
+         * Populates the database with a default theme mode.
+         *
+         * @param context the context in which the database is being created
+         * @param instance the instance of the database being created
+         */
         private final java.lang.Object populateDatabase(android.content.Context context, uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageDatabase instance, kotlin.coroutines.Continuation<? super kotlin.Unit> continuation) {
             return null;
         }

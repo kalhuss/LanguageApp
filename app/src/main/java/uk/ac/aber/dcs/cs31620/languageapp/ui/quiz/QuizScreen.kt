@@ -22,20 +22,28 @@ import uk.ac.aber.dcs.cs31620.languageapp.model.WordLanguageViewModel
 import uk.ac.aber.dcs.cs31620.languageapp.ui.components.TopLevelScaffold
 import uk.ac.aber.dcs.cs31620.languageapp.ui.navigation.Screen
 
+/**
+ * The screen that allows the user to select a quiz to take.
+ *
+ * @param navController The navigation controller for the app.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NotConstructor",
     "CoroutineCreationDuringComposition"
 )
 @Composable
 fun QuizScreen(navController : NavHostController) {
 
+    // Accessing the databases
     val viewModel: WordLanguageViewModel = viewModel()
     val allLanguages: LiveData<List<Language>> = viewModel.allLanguages
     val language = allLanguages.observeAsState().value?.firstOrNull()
     val allWords: LiveData<List<Word>> = viewModel.allWords
 
+    // Snack bar
     val snackbarHostState = remember { SnackbarHostState()}
     val scope = rememberCoroutineScope()
 
+    // Checks if there are words in the words database
     var empty = true
     allWords.observeAsState().value?.let { list ->
         if(list.isNotEmpty()){
@@ -57,8 +65,10 @@ fun QuizScreen(navController : NavHostController) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Column {
 
+                    // Translation quiz button
                     Button(
                         onClick = {
+                            // Error handling
                             if ((language != null) && !empty) {
                                 navController.navigate(Screen.TranslationQuiz.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -69,11 +79,12 @@ fun QuizScreen(navController : NavHostController) {
                                 }
                             } else if (language == null) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Input a language", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Input a language", withDismissAction = false, duration = SnackbarDuration.Short)
+
                                 }
                             } else {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Add a word to the word list", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Add a new word to the list", withDismissAction = false, duration = SnackbarDuration.Short)
                                 }
                             }
                         },
@@ -88,6 +99,7 @@ fun QuizScreen(navController : NavHostController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Scramble quiz button
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {
@@ -100,11 +112,13 @@ fun QuizScreen(navController : NavHostController) {
                                 }
                             } else if (language == null) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Input a language", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Input a language", withDismissAction = false, duration = SnackbarDuration.Short)
+
                                 }
                             } else {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Add a word to the word list", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Add a new word to the list", withDismissAction = false, duration = SnackbarDuration.Short)
+
                                 }
                             }
                         },
@@ -118,6 +132,7 @@ fun QuizScreen(navController : NavHostController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Word match quiz button
                     Button(
                         onClick = {
                             if ((language != null) && !empty) {
@@ -130,11 +145,12 @@ fun QuizScreen(navController : NavHostController) {
                                 }
                             } else if (language == null) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Input a language", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Input a language", withDismissAction = false, duration = SnackbarDuration.Short)
+
                                 }
                             } else {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Add a word to the word list", "Dismiss", false, SnackbarDuration.Short)
+                                    snackbarHostState.showSnackbar("Add a new word to the list", withDismissAction = false, duration = SnackbarDuration.Short)
                                 }
                             }
                         },

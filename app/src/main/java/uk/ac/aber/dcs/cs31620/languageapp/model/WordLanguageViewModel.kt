@@ -9,6 +9,11 @@ import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageDatabase
 import uk.ac.aber.dcs.cs31620.languageapp.datasource.WordLanguageRepository
 
+/**
+ * ViewModel for the database.
+ *
+ * @param application The application context.
+ */
 class WordLanguageViewModel(application: Application) : AndroidViewModel(application) {
 
     private val wordLanguageRepository: WordLanguageRepository

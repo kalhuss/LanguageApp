@@ -29,6 +29,13 @@ import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.AddWordScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.EditWordScreen
 import uk.ac.aber.dcs.cs31620.languageapp.ui.wordList.WordListScreen
 
+/**
+ * The main activity of the app.
+ *
+ * This activity is responsible for setting up the content for the app and displaying it on screen. It uses the
+ * [WordLanguageViewModel] to retrieve the current theme from the database and apply it to the app. It also sets up
+ * the navigation graph for the app using the [BuildNavigationGraph] function.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,7 @@ class MainActivity : ComponentActivity() {
             val allTheme: LiveData<List<ThemeMode>> = viewModel.allTheme
             val getTheme = allTheme.observeAsState().value?.firstOrNull()
 
+            // Gets the theme
             if (getTheme != null) {
                 LanguageAppTheme(getTheme.isDark)  {
                     Surface(
@@ -52,6 +60,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Navigation graph
 @Composable
 private fun BuildNavigationGraph() {
 
